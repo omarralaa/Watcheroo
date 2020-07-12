@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:watcherooflutter/screens/party_managment_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:watcherooflutter/bloc/auth_bloc.dart';
+import 'package:watcherooflutter/screens/party_management_screen.dart';
 
 import './screens/auth_screen.dart';
 
@@ -14,13 +16,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        //backgroundColor: Color(0xFFe36387),
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        backgroundColor: Color(0xFFa6dcef),
+        primarySwatch: Colors.pink,
+        //accentColor: Color(0xFFf2aaaa),
       ),
-      home: AuthScreen(),
+      initialRoute: AuthScreen.routeName,
       routes: {
         PartyManagement.routeName: (ctx) => PartyManagement(),
+        AuthScreen.routeName: (ctx) => Provider<AuthBloc>(
+              create: (ctx) => AuthBloc(),
+              child: AuthScreen(),
+            ),
       },
     );
   }
