@@ -19,9 +19,11 @@ class DrawerItems extends StatelessWidget {
             ListTile(
               title: Text('Watch Together!!!'),
             ),
+            Divider(),
             ListTile(
               title: Text('Previously Watched'),
             ),
+            Divider(),
             ListTile(
               title: Text('About'),
             ),

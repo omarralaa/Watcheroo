@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:watcherooflutter/widgets/drawer_items_widget.dart';
-import 'package:watcherooflutter/widgets/sliver_appbar_widget.dart';
+
+import '../widgets/drawer_items.dart';
+import '../widgets/sliver_appbar.dart';
 
 class PartyManagement extends StatelessWidget {
   static const routeName = '/party-management';

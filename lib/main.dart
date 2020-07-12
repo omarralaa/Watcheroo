@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:watcherooflutter/bloc/auth_bloc.dart';
-import 'package:watcherooflutter/screens/party_management_screen.dart';
 
-import './screens/auth_screen.dart';
+import './src/bloc/auth_bloc.dart';
+import './src/screens/party_management_screen.dart';
+
+import './src/screens/auth_screen.dart';
 
 void main() {
   runApp(MyApp());

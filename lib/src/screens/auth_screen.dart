@@ -80,7 +80,7 @@ class _AuthScreenState extends State<AuthScreen> {
               ? null
               : () {
                   bloc.submitData(_isLogin);
-                  //Navigator.of(context).pushNamed(PartyManagement.routeName);
+                  Navigator.of(context).pushNamed(PartyManagement.routeName);
                 },
         );
       },
