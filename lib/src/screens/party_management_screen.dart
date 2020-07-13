@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/drawer_items.dart';
+import '../widgets/main_drawer.dart';
 import '../widgets/sliver_appbar.dart';
 
 class PartyManagement extends StatelessWidget {
@@ -19,9 +19,7 @@ class PartyManagement extends StatelessWidget {
         onPressed: null,
         child: Icon(Icons.add),
       ),
-      drawer: Drawer(
-        child: DrawerItems(),
-      ),
+      drawer: MainDrawer(),
       endDrawer: Drawer(),
     );
   }

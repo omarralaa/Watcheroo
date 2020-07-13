@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import './src/bloc/auth_bloc.dart';
 import './src/screens/party_management_screen.dart';
+import './src/screens/video_player_screen.dart';
 
 import './src/screens/auth_screen.dart';
 
