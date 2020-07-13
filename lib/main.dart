@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:watcherooflutter/src/screens/create_party_screen.dart';
 
 import './src/bloc/auth_bloc.dart';
 import './src/screens/party_management_screen.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
               create: (ctx) => AuthBloc(),
               child: AuthScreen(),
             ),
+        CreatePartyScreen.routeName: (ctx) => CreatePartyScreen(),
       },
     );
   }
