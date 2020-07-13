@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart' show Provider;
+import 'package:provider/provider.dart' show Consumer, Provider;
+import 'package:watcherooflutter/src/providers/auth.dart';
+import 'package:watcherooflutter/src/providers/auth_validation.dart';
 
-import '../bloc/auth_bloc.dart';
 import '../widgets/auth_form.dart';
 import './party_management_screen.dart';
 
-class AuthScreen extends StatefulWidget {
+class AuthScreen extends StatelessWidget {
   static const String routeName = '/';
 
   @override
-  _AuthScreenState createState() => _AuthScreenState();
-}
-
-class _AuthScreenState extends State<AuthScreen> {
-  bool _isLogin = true;
-
-  @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<AuthBloc>(context);
+    final authValidation = Provider.of<AuthValidation>(context, listen: false);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
@@ -38,22 +32,19 @@ class _AuthScreenState extends State<AuthScreen> {
                       color: Theme.of(context).primaryColor,
                     ),
                   ),
-                  AuthForm(_isLogin),
+                  AuthForm(),
                   SizedBox(
                     height: 15,
                   ),
-                  _loginButton(bloc),
+                  _loginButton(),
                   FlatButton(
                     child: Text(
-                      _isLogin
+                      authValidation.isLogin
                           ? 'Not a user? Register now'
                           : 'Already a user? Login now',
                     ),
                     onPressed: () {
-                      bloc.restData();
-                      setState(() {
-                        _isLogin = !_isLogin;
-                      });
+                      authValidation.changeLogin();
                     },
                   ),
                 ],
@@ -65,25 +56,23 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  Widget _loginButton(AuthBloc bloc) {
-    return StreamBuilder<bool>(
-      stream: _isLogin ? bloc.validLogin : bloc.validRegister,
-      builder: (context, snapshot) {
-        return RaisedButton(
-          child: Text(_isLogin ? 'Login' : 'Register'),
-          color: Theme.of(context).primaryColor,
-          textColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          onPressed: !snapshot.hasData
-              ? null
-              : () {
-                  bloc.submitData(_isLogin);
-                  Navigator.of(context).pushNamed(PartyManagement.routeName);
-                },
-        );
-      },
-    );
+  Widget _loginButton() {
+    return Consumer<AuthValidation>(builder: (ctx, authValidation, _) {
+      return RaisedButton(
+        child: Text(authValidation.isLogin ? 'Login' : 'Register'),
+        color: Theme.of(ctx).primaryColor,
+        textColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        onPressed: !authValidation.isValid
+            ? null
+            : () async {
+                final auth = Provider.of<Auth>(ctx, listen: false);
+                authValidation.submitData(auth);
+                Navigator.of(ctx).pushNamed(PartyManagement.routeName);
+              },
+      );
+    });
   }
 }
