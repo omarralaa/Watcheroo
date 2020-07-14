@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:watcherooflutter/src/models/http_exception.dart';
 
-class AuthRepository {
+import '../models/auth_response.dart';
+import '../models/http_exception.dart';
+
+class AuthService {
   final String url = 'http://10.0.2.2:3000/api/v1/auth';
 
-  Future<String> login(String email, String password) async {
+  Future<AuthResponse> login(String email, String password) async {
     final loginUrl = url + '/login';
 
     Map<String, String> requestHeaders = {
@@ -20,20 +22,22 @@ class AuthRepository {
         'password': password,
       });
 
-      final response =
-          await http.post(loginUrl, body: reqBody, headers: requestHeaders);
+      final response = await http
+          .post(loginUrl, body: reqBody, headers: requestHeaders)
+          .timeout(Duration(seconds: 5),
+              onTimeout: () => throw HttpException('Server Timed out'));
       final responseData = json.decode(response.body);
 
       if (responseData['error'] != null)
         throw HttpException(responseData['error']);
 
-      return responseData['data']['token'];
+      return AuthResponse.fromJson(responseData['data']);
     } catch (error) {
       throw (error);
     }
   }
 
-  Future<String> register(
+  Future<AuthResponse> register(
       String email, String password, String fullName) async {
     final loginUrl = url + '/signup';
     print(loginUrl);
@@ -60,7 +64,7 @@ class AuthRepository {
       if (responseData['error'] != null)
         throw HttpException(responseData['error']);
 
-      return responseData['data']['token'];
+      return AuthResponse.fromJson(responseData);
     } catch (error) {
       throw (error);
     }

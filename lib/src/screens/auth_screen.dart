@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' show Consumer, Provider;
-import 'package:watcherooflutter/src/providers/auth.dart';
-import 'package:watcherooflutter/src/providers/auth_validation.dart';
+import '../models/http_exception.dart';
+import '../providers/auth.dart';
+import '../providers/auth_validation.dart';
 
 import '../widgets/auth_form.dart';
-import './party_management_screen.dart';
 
 class AuthScreen extends StatelessWidget {
   static const String routeName = '/';
@@ -57,22 +57,47 @@ class AuthScreen extends StatelessWidget {
   }
 
   Widget _loginButton() {
-    return Consumer<AuthValidation>(builder: (ctx, authValidation, _) {
-      return RaisedButton(
-        child: Text(authValidation.isLogin ? 'Login' : 'Register'),
-        color: Theme.of(ctx).primaryColor,
-        textColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        onPressed: !authValidation.isValid
-            ? null
-            : () async {
-                final auth = Provider.of<Auth>(ctx, listen: false);
-                authValidation.submitData(auth);
-                Navigator.of(ctx).pushNamed(PartyManagement.routeName);
+    return Consumer<AuthValidation>(
+      builder: (ctx, authValidation, _) {
+        return RaisedButton(
+          child: Text(authValidation.isLogin ? 'Login' : 'Register'),
+          color: Theme.of(ctx).primaryColor,
+          textColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          onPressed: !authValidation.isValid
+              ? null
+              : () async {
+                  final auth = Provider.of<Auth>(ctx, listen: false);
+                  final err = await authValidation.submitData(auth);
+                  if (err != null) _showError(err, ctx);
+                },
+        );
+      },
+    );
+  }
+
+  void _showError(err, BuildContext context) {
+    final errorMessage = err is HttpException
+        ? err.message
+        : 'Something wrong happened, try again later.';
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          title: Text('Authentication failed'),
+          content: Text(errorMessage),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Try Again'),
+              onPressed: () {
+                Navigator.of(ctx).pop();
               },
-      );
-    });
+            )
+          ],
+        );
+      },
+    );
   }
 }

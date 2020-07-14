@@ -3,30 +3,25 @@ import 'package:provider/provider.dart' show Provider;
 
 import '../providers/auth_validation.dart';
 
-class AuthForm extends StatefulWidget {
-  // TODO: CHECK IF CAN BE CHANGED TO STATELESS
-
-  @override
-  _AuthFormState createState() => _AuthFormState();
-}
-
-class _AuthFormState extends State<AuthForm> {
-  FocusNode _emailFocusNode = FocusNode();
-  FocusNode _passwordFocusNode = FocusNode();
+class AuthForm extends StatelessWidget {
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     final authValidation = Provider.of<AuthValidation>(context);
     return Column(
       children: <Widget>[
-        if (!authValidation.isLogin) _fullNameTextField(authValidation),
-        _emailTextField(authValidation),
+        if (!authValidation.isLogin)
+          _fullNameTextField(authValidation, context),
+        _emailTextField(authValidation, context),
         _passwordTextField(authValidation),
       ],
     );
   }
 
-  Widget _fullNameTextField(AuthValidation authValidation) {
+  Widget _fullNameTextField(
+      AuthValidation authValidation, BuildContext context) {
     return TextField(
       key: ValueKey('fullName'),
       decoration: InputDecoration(
@@ -41,7 +36,7 @@ class _AuthFormState extends State<AuthForm> {
     );
   }
 
-  Widget _emailTextField(AuthValidation authValidation) {
+  Widget _emailTextField(AuthValidation authValidation, BuildContext context) {
     return TextField(
       key: ValueKey('email'),
       keyboardType: TextInputType.emailAddress,

@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:watcherooflutter/src/models/validation_item.dart';
+import 'package:flutter/material.dart';
 
-import 'auth.dart';
+import '../models/validation_item.dart';
+import './auth.dart';
 
 class AuthValidation with ChangeNotifier {
   ValidationItem _fullName = ValidationItem(null, null);
@@ -60,11 +62,17 @@ class AuthValidation with ChangeNotifier {
     notifyListeners();
   }
 
-  void submitData(Auth auth) {
-    if (isLogin) {
-      auth.login(email.value, password.value);
-    } else {
-      auth.register(email.value, password.value, fullName.value);
+  Future<dynamic> submitData(Auth auth) async {
+    try {
+      if (isLogin) {
+        await auth.login(email.value.trim(), password.value.trim());
+      } else {
+        await auth.register(
+            email.value.trim(), password.value.trim(), fullName.value);
+      }
+    } catch (err) {
+      return err;
     }
+    return null;
   }
 }

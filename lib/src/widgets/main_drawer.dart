@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/auth.dart';
 
 class MainDrawer extends StatelessWidget {
   @override
@@ -37,10 +40,7 @@ class MainDrawer extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     Divider(),
-                    RaisedButton(
-                      onPressed: () {},
-                      child: Text('Log out'),
-                    ),
+                    _buildLogoutButton(),
                   ],
                 ),
               ),
@@ -49,5 +49,22 @@ class MainDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _buildLogoutButton() {
+    return Consumer<Auth>(builder: (context, auth, _) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: RaisedButton(
+          color: Theme.of(context).primaryColor,
+          textColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text('Log out'),
+          onPressed: auth.logout,
+        ),
+      );
+    });
   }
 }
