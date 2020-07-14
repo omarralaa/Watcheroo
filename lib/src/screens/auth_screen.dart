@@ -37,16 +37,7 @@ class AuthScreen extends StatelessWidget {
                     height: 15,
                   ),
                   _loginButton(),
-                  FlatButton(
-                    child: Text(
-                      authValidation.isLogin
-                          ? 'Not a user? Register now'
-                          : 'Already a user? Login now',
-                    ),
-                    onPressed: () {
-                      authValidation.changeLogin();
-                    },
-                  ),
+                  _switchLoginButton(),
                 ],
               ),
             ),
@@ -76,6 +67,21 @@ class AuthScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  Widget _switchLoginButton() {
+    return Consumer<AuthValidation>(builder: (context, authValidation, _) {
+      return FlatButton(
+        child: Text(
+          authValidation.isLogin
+              ? 'Not a user? Register now'
+              : 'Already a user? Login now',
+        ),
+        onPressed: () {
+          authValidation.changeLogin();
+        },
+      );
+    });
   }
 
   void _showError(err, BuildContext context) {

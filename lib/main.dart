@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:watcherooflutter/src/providers/auth.dart';
-import 'package:watcherooflutter/src/screens/splash_screen.dart';
 
+import './src/providers/auth.dart';
+import './src/screens/splash_screen.dart';
 import './src/providers/auth_validation.dart';
 import './src/screens/party_management_screen.dart';
 import './src/screens/auth_screen.dart';

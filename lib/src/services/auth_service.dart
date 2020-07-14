@@ -39,8 +39,7 @@ class AuthService {
 
   Future<AuthResponse> register(
       String email, String password, String fullName) async {
-    final loginUrl = url + '/signup';
-    print(loginUrl);
+    final registerUrl = url + '/signup';
 
     Map<String, String> requestHeaders = {
       'Content-type': 'application/json',
@@ -57,14 +56,17 @@ class AuthService {
         'lastName': names[1],
       });
 
-      final response =
-          await http.post(loginUrl, body: reqBody, headers: requestHeaders);
+      final response = await http
+          .post(registerUrl, body: reqBody, headers: requestHeaders)
+          .timeout(Duration(seconds: 5),
+              onTimeout: () => throw HttpException('Server Timed out'));
+
       final responseData = json.decode(response.body);
 
       if (responseData['error'] != null)
         throw HttpException(responseData['error']);
 
-      return AuthResponse.fromJson(responseData);
+      return AuthResponse.fromJson(responseData['data']);
     } catch (error) {
       throw (error);
     }
