@@ -7,6 +7,7 @@ import './src/providers/auth_validation.dart';
 import './src/screens/party_management_screen.dart';
 import './src/screens/auth_screen.dart';
 import './src/screens/create_party_screen.dart';
+import './src/providers/create_party.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,7 +30,14 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               backgroundColor: Color(0xFFa6dcef),
               primarySwatch: Colors.pink,
-              //accentColor: Color(0xFFf2aaaa),
+              //accentColor: Color(0xFF1EE9A4),
+              buttonTheme: ButtonThemeData().copyWith(
+                buttonColor: Colors.pink,
+                textTheme: ButtonTextTheme.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
             ),
             home: auth.isAuth
                 ? PartyManagement()
@@ -46,12 +54,11 @@ class MyApp extends StatelessWidget {
                   ),
             routes: {
               PartyManagement.routeName: (ctx) => PartyManagement(),
-//              AuthScreen.routeName: (ctx) =>
-//                  ChangeNotifierProvider<AuthValidation>(
-//                    create: (ctx) => AuthValidation(),
-//                    child: AuthScreen(),
-//                  ),
-              CreatePartyScreen.routeName: (ctx) => CreatePartyScreen(),
+              CreatePartyScreen.routeName: (ctx) =>
+                  ChangeNotifierProvider<CreateParty>(
+                    create: (ctx) => CreateParty(),
+                    child: CreatePartyScreen(),
+                  ),
             },
           );
         },

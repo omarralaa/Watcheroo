@@ -52,11 +52,6 @@ class AuthScreen extends StatelessWidget {
       builder: (ctx, authValidation, _) {
         return RaisedButton(
           child: Text(authValidation.isLogin ? 'Login' : 'Register'),
-          color: Theme.of(ctx).primaryColor,
-          textColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
           onPressed: !authValidation.isValid
               ? null
               : () async {
