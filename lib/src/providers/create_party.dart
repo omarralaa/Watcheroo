@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:video_player/video_player.dart';
 
@@ -48,7 +47,6 @@ class CreateParty with ChangeNotifier {
 
   void setMovieName(String movie) {
     _movieName = movie;
-    notifyListeners();
   }
 
   void selectFriend(String friend) {

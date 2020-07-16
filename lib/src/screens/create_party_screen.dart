@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:watcherooflutter/src/providers/create_party.dart';
+
+import '../providers/create_party.dart';
 
 class CreatePartyScreen extends StatelessWidget {
   static const routeName = '/create-party';
@@ -17,7 +18,7 @@ class CreatePartyScreen extends StatelessWidget {
           margin: EdgeInsets.symmetric(vertical: 30, horizontal: 15),
           child: Column(
             children: <Widget>[
-              _buildMovieTextField(),
+              _buildMovieTextField(context),
               SizedBox(height: 20),
               _buildFileRow(context),
               SizedBox(height: 20),
@@ -40,15 +41,14 @@ class CreatePartyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMovieTextField() {
-    return Consumer<CreateParty>(
-      builder: (ctx, createParty, _) => TextField(
-        decoration: InputDecoration(
-          labelText: 'Movie Name',
-          hintText: 'ex. Interstellar, The Green Mile',
-        ),
-        onChanged: createParty.setMovieName,
+  Widget _buildMovieTextField(BuildContext context) {
+    final createParty = Provider.of<CreateParty>(context, listen: false);
+    return TextField(
+      decoration: InputDecoration(
+        labelText: 'Movie Name',
+        hintText: 'ex. Interstellar, The Green Mile',
       ),
+      onChanged: createParty.setMovieName,
     );
   }
 

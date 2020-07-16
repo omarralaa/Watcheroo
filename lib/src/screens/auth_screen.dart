@@ -11,7 +11,6 @@ class AuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authValidation = Provider.of<AuthValidation>(context, listen: false);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
