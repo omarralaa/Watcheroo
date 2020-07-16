@@ -71,11 +71,6 @@ class MainDrawer extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: RaisedButton(
-          color: Theme.of(context).primaryColor,
-          textColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
           child: Text('Log out'),
           onPressed: auth.logout,
         ),
