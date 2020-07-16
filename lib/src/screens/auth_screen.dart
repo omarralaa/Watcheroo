@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' show Consumer, Provider;
+import 'package:watcherooflutter/src/providers/profile.dart';
 import '../models/http_exception.dart';
 import '../providers/auth.dart';
 import '../providers/auth_validation.dart';
@@ -56,7 +57,11 @@ class AuthScreen extends StatelessWidget {
               : () async {
                   final auth = Provider.of<Auth>(ctx, listen: false);
                   final err = await authValidation.submitData(auth);
-                  if (err != null) _showError(err, ctx);
+                  if (err != null)
+                    _showError(err, ctx);
+                  else {
+                    //await Provider.of<Profile>(ctx, listen: false).getProfile();
+                  }
                 },
         );
       },

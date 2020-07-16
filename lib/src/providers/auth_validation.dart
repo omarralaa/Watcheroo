@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:watcherooflutter/src/providers/profile.dart';
 
 import '../models/validation_item.dart';
 import './auth.dart';

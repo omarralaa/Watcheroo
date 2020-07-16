@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:watcherooflutter/src/providers/user.dart';
+import 'package:watcherooflutter/src/providers/profile.dart';
 
 import './src/providers/auth.dart';
 import './src/screens/splash_screen.dart';
@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<Auth>(
           create: (ctx) => Auth(),
         ),
-        ChangeNotifierProvider<User>(
-          create: (ctx) => User(),
+        ChangeNotifierProvider<Profile>(
+          create: (ctx) => Profile(),
         ),
       ],
       child: Consumer<Auth>(

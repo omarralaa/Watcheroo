@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:watcherooflutter/src/providers/user.dart';
+import 'package:watcherooflutter/src/providers/profile.dart';
+import 'package:watcherooflutter/src/widgets/loading_app_bar.dart';
 
 import '../providers/auth.dart';
 
@@ -45,25 +46,23 @@ class MainDrawer extends StatelessWidget {
   }
 
   Widget drawerHeader() {
-    return Consumer<User>(builder: (context, user, _) {
-      final x = user.start();
-      return FutureBuilder(
-        future: x,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.waiting)
-            return UserAccountsDrawerHeader(
-              accountName: Text(user.user.firstName + ' ' + user.user.lastName),
-              accountEmail: Text(user.user.email),
-              currentAccountPicture: CircleAvatar(
-                child: Text('Y'),
-                backgroundColor: Colors.white,
-              ),
-            );
-          else
-            return CircularProgressIndicator();
-        },
-      );
-    });
+    return Consumer<Profile>(
+      builder: (context, profile, _) {
+        return profile.user == null
+            ? LoadingAppBar()
+            : UserAccountsDrawerHeader(
+                accountName:
+                    Text(profile.user.firstName + ' ' + profile.user.lastName),
+                // TODO: TO BE CHANGED TO USERNAME
+                accountEmail: Text('Placeholder for username'),
+                currentAccountPicture: CircleAvatar(
+                  // TODO: TO BE CHANGED TO REAL PIC
+                  child: Text(profile.user.firstName[0].toUpperCase()),
+                  backgroundColor: Colors.white,
+                ),
+              );
+      },
+    );
   }
 
   Widget _buildLogoutButton() {

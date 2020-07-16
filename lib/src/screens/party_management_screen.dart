@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:watcherooflutter/src/models/user.dart';
-import 'package:watcherooflutter/src/providers/user.dart' as p;
-import 'package:watcherooflutter/src/services/user_service.dart';
-import 'package:watcherooflutter/src/screens/create_party_screen.dart';
+import 'package:watcherooflutter/src/providers/profile.dart';
 
+import '../screens/create_party_screen.dart';
 import '../widgets/main_drawer.dart';
 import '../widgets/sliver_appbar.dart';
 
@@ -13,6 +11,7 @@ class PartyManagement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<Profile>(context, listen: false).getProfile();
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
