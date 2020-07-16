@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:watcherooflutter/src/providers/user.dart';
 
 import '../providers/auth.dart';
 
 class MainDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final drawerHeader = UserAccountsDrawerHeader(
-      accountName: Text('Yosra Emad'),
-      accountEmail: Text('yosra@gmail.com'),
-      currentAccountPicture: CircleAvatar(
-        child: Text('Y'),
-        backgroundColor: Colors.white,
-      ),
-    );
     return Drawer(
       child: Column(
         children: <Widget>[
           Expanded(
             child: ListView(children: <Widget>[
-              drawerHeader,
+              drawerHeader(),
               ListTile(
                 title: Text('Watch Together!!!'),
               ),
@@ -49,6 +42,28 @@ class MainDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget drawerHeader() {
+    return Consumer<User>(builder: (context, user, _) {
+      final x = user.start();
+      return FutureBuilder(
+        future: x,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.waiting)
+            return UserAccountsDrawerHeader(
+              accountName: Text(user.user.firstName + ' ' + user.user.lastName),
+              accountEmail: Text(user.user.email),
+              currentAccountPicture: CircleAvatar(
+                child: Text('Y'),
+                backgroundColor: Colors.white,
+              ),
+            );
+          else
+            return CircularProgressIndicator();
+        },
+      );
+    });
   }
 
   Widget _buildLogoutButton() {

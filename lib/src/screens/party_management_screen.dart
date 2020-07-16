@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:watcherooflutter/src/models/user.dart';
+import 'package:watcherooflutter/src/providers/user.dart' as p;
+import 'package:watcherooflutter/src/services/user_service.dart';
 
 import '../widgets/main_drawer.dart';
 import '../widgets/sliver_appbar.dart';
