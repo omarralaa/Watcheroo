@@ -8,22 +8,21 @@ class EditProfile extends StatelessWidget {
   static const String routeName = "/edit-profile";
   UserProfile user;
   Color accentColor;
+  Color bgColor;
 
   @override
   Widget build(BuildContext context) {
     accentColor = Theme.of(context).accentColor;
+    bgColor = Theme.of(context).backgroundColor;
     user = Provider.of<Profile>(context).user;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Edit Profile'),
-        centerTitle: true,
-      ),
       body: buildBody(),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(8.0),
         child: RaisedButton(
-          color: accentColor,
-          onPressed: () {},
+          disabledColor: accentColor,
+          disabledTextColor: Colors.white,
+          onPressed: null,
           child: Text('Save'),
         ),
       ),
@@ -39,6 +38,36 @@ class EditProfile extends StatelessWidget {
             child: Stack(
               fit: StackFit.loose,
               children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  height: 200,
+                  color: bgColor,
+                ),
+                Transform.translate(
+                  offset: Offset(220.0, -30.0),
+                  child: RotationTransition(
+                    turns: AlwaysStoppedAnimation(30 / 360),
+                    child: Container(
+                      width: double.infinity,
+                      height: 200,
+                      color: Colors.pink,
+                    ),
+                  ),
+                ),
+                Transform.scale(
+                  scale: 2.0,
+                  child: Transform.translate(
+                    offset: Offset(-150.0, -60.0),
+                    child: RotationTransition(
+                      turns: AlwaysStoppedAnimation(-30 / 360),
+                      child: Container(
+                        width: double.infinity,
+                        height: 200,
+                        color: accentColor,
+                      ),
+                    ),
+                  ),
+                ),
                 Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -82,19 +111,19 @@ class EditProfile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    'NAME',
-                    style: TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
-                      color: accentColor,
-                    ),
+                  SizedBox(
+                    height: 20.0,
                   ),
                   Row(
                     children: <Widget>[
                       Expanded(
                         child: TextField(
                           decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: accentColor,
+                              ),
+                            ),
                             labelText: 'First Name',
                           ),
                           controller: TextEditingController()
@@ -107,6 +136,11 @@ class EditProfile extends StatelessWidget {
                       Expanded(
                         child: TextField(
                           decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: accentColor,
+                              ),
+                            ),
                             labelText: 'Last Name',
                           ),
                           controller: TextEditingController()
@@ -114,6 +148,21 @@ class EditProfile extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: accentColor,
+                        ),
+                      ),
+                      labelText: 'Username',
+                    ),
+                    controller: TextEditingController()
+                      ..text = user.user.username,
                   ),
                 ],
               ),
