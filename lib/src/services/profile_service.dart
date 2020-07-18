@@ -27,9 +27,9 @@ class ProfileService with Utils {
       if (responseBody['error'] != null)
         throw HttpException(responseBody['error']);
 
-      UserProfile user = UserProfile.fromJson(responseBody['data']);
+      UserProfile profile = UserProfile.fromJson(responseBody['data']);
 
-      return user;
+      return profile;
     } catch (error) {
       throw error;
     }

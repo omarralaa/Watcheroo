@@ -28,5 +28,8 @@ class UserProfile {
     _lastName = json['lastName'];
     _userId = json['_userId'];
     _photo = json['photo'];
+    _friends = Friend.getFriendsFromJson(json['friends']);
+    _requests = Friend.getFriendsFromJson(json['requests']);
+    _sentRequests = Friend.getFriendsFromJson(json['sentRequests']);
   }
 }
