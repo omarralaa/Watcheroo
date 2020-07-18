@@ -7,7 +7,6 @@ class Friend {
   String _photo;
 
   String get id => _id;
-  String get userId => _userId;
   String get username => _username;
   String get firstName => _firstName;
   String get lastName => _lastName;
@@ -18,11 +17,10 @@ class Friend {
     _username = json['username'];
     _firstName = json['firstName'];
     _lastName = json['lastName'];
-    _userId = json['_userId'];
     _photo = json['photo'];
   }
 
-  static List<Friend> getFriendsFromJson(List<Map<String, dynamic>> mapList) {
+  static List<Friend> getFriendsFromJson(List<dynamic> mapList) {
     List<Friend> friends = List<Friend>();
     for (var mapJson in mapList) {
       friends.add(Friend.fromJson(mapJson));

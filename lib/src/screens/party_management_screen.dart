@@ -6,7 +6,7 @@ import '../screens/create_party_screen.dart';
 import '../widgets/main_drawer.dart';
 import '../widgets/sliver_appbar.dart';
 
-class PartyManagement extends StatelessWidget {
+class PartyManagementScreen extends StatelessWidget {
   static const routeName = '/party-management';
 
   @override

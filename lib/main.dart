@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:watcherooflutter/src/providers/profile.dart';
+import 'package:watcherooflutter/src/screens/tabs_screen.dart';
 
 import './src/providers/auth.dart';
 import './src/screens/splash_screen.dart';
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             home: auth.isAuth
-                ? PartyManagement()
+                ? TabsScreen()
                 : FutureBuilder(
                     future: auth.tryAutoLogin(),
                     builder: (context, snapshot) {
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
                     },
                   ),
             routes: {
-              PartyManagement.routeName: (ctx) => PartyManagement(),
+              PartyManagementScreen.routeName: (ctx) => PartyManagementScreen(),
               CreatePartyScreen.routeName: (ctx) =>
                   ChangeNotifierProvider<CreateParty>(
                     create: (ctx) => CreateParty(),
