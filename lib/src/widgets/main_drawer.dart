@@ -53,8 +53,7 @@ class MainDrawer extends StatelessWidget {
             : UserAccountsDrawerHeader(
                 accountName:
                     Text(profile.user.firstName + ' ' + profile.user.lastName),
-                // TODO: TO BE CHANGED TO USERNAME
-                accountEmail: Text('Placeholder for username'),
+                accountEmail: Text(profile.user.username),
                 currentAccountPicture: CircleAvatar(
                   // TODO: TO BE CHANGED TO REAL PIC
                   child: Text(profile.user.firstName[0].toUpperCase()),
