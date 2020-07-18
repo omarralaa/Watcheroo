@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:watcherooflutter/src/providers/profile.dart';
 
+import '../providers/profile.dart';
 import '../screens/create_party_screen.dart';
 import '../widgets/main_drawer.dart';
 import '../widgets/sliver_appbar.dart';

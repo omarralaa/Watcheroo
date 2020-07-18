@@ -1,15 +1,10 @@
-import 'friend.dart';
-
-class UserProfile {
+class Friend {
   String _id;
   String _userId;
   String _username;
   String _firstName;
   String _lastName;
   String _photo;
-  List<Friend> _friends;
-  List<Friend> _requests;
-  List<Friend> _sentRequests;
 
   String get id => _id;
   String get userId => _userId;
@@ -17,16 +12,22 @@ class UserProfile {
   String get firstName => _firstName;
   String get lastName => _lastName;
   String get photo => _photo;
-  List<Friend> get friends => _friends;
-  List<Friend> get requests => _requests;
-  List<Friend> get sentRequests => _sentRequests;
 
-  UserProfile.fromJson(Map<String, dynamic> json) {
+  Friend.fromJson(Map<String, dynamic> json) {
     _id = json['_id'];
     _username = json['username'];
     _firstName = json['firstName'];
     _lastName = json['lastName'];
     _userId = json['_userId'];
     _photo = json['photo'];
+  }
+
+  static List<Friend> getFriendsFromJson(List<Map<String, dynamic>> mapList) {
+    List<Friend> friends = List<Friend>();
+    for (var mapJson in mapList) {
+      friends.add(Friend.fromJson(mapJson));
+    }
+
+    return friends;
   }
 }
