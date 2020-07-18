@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:watcherooflutter/src/providers/profile.dart';
+import 'package:watcherooflutter/src/screens/edit_profile_screen.dart';
 
 import './src/providers/auth.dart';
 import './src/screens/splash_screen.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               backgroundColor: Color(0xFFa6dcef),
               primarySwatch: Colors.pink,
-              //accentColor: Color(0xFF1EE9A4),
+              accentColor: Colors.grey[700],
               buttonTheme: ButtonThemeData().copyWith(
                 buttonColor: Colors.pink,
                 textTheme: ButtonTextTheme.primary,
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
                     create: (ctx) => CreateParty(),
                     child: CreatePartyScreen(),
                   ),
+              EditProfile.routeName: (ctx) => EditProfile(),
             },
           );
         },

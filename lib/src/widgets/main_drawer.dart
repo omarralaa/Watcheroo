@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:watcherooflutter/src/providers/profile.dart';
+import 'package:watcherooflutter/src/screens/edit_profile_screen.dart';
 import 'package:watcherooflutter/src/widgets/loading_app_bar.dart';
 
 import '../providers/auth.dart';
@@ -51,6 +52,8 @@ class MainDrawer extends StatelessWidget {
         return profile.user == null
             ? LoadingAppBar()
             : UserAccountsDrawerHeader(
+                onDetailsPressed: () =>
+                    Navigator.pushNamed(context, EditProfile.routeName),
                 accountName:
                     Text(profile.user.firstName + ' ' + profile.user.lastName),
                 // TODO: TO BE CHANGED TO USERNAME
