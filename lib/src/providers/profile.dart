@@ -17,4 +17,12 @@ class Profile extends ChangeNotifier {
       throw err;
     }
   }
+
+  bool hasFriendbyUsername(String username) {
+    for (var friend in _user.friends) {
+      if (friend.username == username) return true;
+    }
+
+    return false;
+  }
 }

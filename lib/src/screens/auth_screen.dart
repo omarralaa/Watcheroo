@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' show Consumer, Provider;
-import 'package:watcherooflutter/src/providers/profile.dart';
 import '../models/http_exception.dart';
 import '../providers/auth.dart';
 import '../providers/auth_validation.dart';

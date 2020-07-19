@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:watcherooflutter/src/providers/profile.dart';
 import 'package:watcherooflutter/src/screens/edit_profile_screen.dart';
 import 'package:watcherooflutter/src/screens/tabs_screen.dart';
+import 'package:watcherooflutter/src/screens/view_profile_screen.dart';
 
 import './src/providers/auth.dart';
 import './src/screens/splash_screen.dart';
@@ -32,8 +33,9 @@ class MyApp extends StatelessWidget {
       child: Consumer<Auth>(
         builder: (context, auth, _) {
           return MaterialApp(
-            title: 'Flutter Demo',
+            title: 'Watcheroo',
             theme: ThemeData(
+              fontFamily: 'OpenSans',
               backgroundColor: Color(0xFFa6dcef),
               primarySwatch: Colors.pink,
               accentColor: Colors.grey[700],
@@ -65,7 +67,8 @@ class MyApp extends StatelessWidget {
                     create: (ctx) => CreateParty(),
                     child: CreatePartyScreen(),
                   ),
-              EditProfile.routeName: (ctx) => EditProfile(),
+              EditProfileScreen.routeName: (ctx) => EditProfileScreen(),
+              ViewProfileScreen.routeName: (ctx) => ViewProfileScreen(),
             },
           );
         },

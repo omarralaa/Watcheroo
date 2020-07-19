@@ -1,6 +1,5 @@
 class Friend {
   String _id;
-  String _userId;
   String _username;
   String _firstName;
   String _lastName;

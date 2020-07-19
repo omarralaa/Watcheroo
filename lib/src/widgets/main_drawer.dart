@@ -53,7 +53,7 @@ class MainDrawer extends StatelessWidget {
             ? LoadingAppBar()
             : UserAccountsDrawerHeader(
                 onDetailsPressed: () =>
-                    Navigator.pushNamed(context, EditProfile.routeName),
+                    Navigator.pushNamed(context, EditProfileScreen.routeName),
                 accountName:
                     Text(profile.user.firstName + ' ' + profile.user.lastName),
                 accountEmail: Text(profile.user.username),
