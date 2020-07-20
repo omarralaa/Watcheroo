@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:watcherooflutter/src/providers/edit_profile_validation.dart';
 
 import '../providers/profile.dart';
 import '../widgets/profile_picture_header.dart';
@@ -13,16 +14,13 @@ class EditProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     accentColor = Theme.of(context).accentColor;
     bgColor = Theme.of(context).backgroundColor;
+    final userProfile = Provider.of<Profile>(context, listen: false).user;
+    Provider.of<EditProfileValidation>(context, listen: false).initValidation(userProfile);
     return Scaffold(
       body: buildBody(),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(8.0),
-        child: RaisedButton(
-          disabledColor: accentColor,
-          disabledTextColor: Colors.white,
-          onPressed: null,
-          child: Text('Save'),
-        ),
+        child: buildSaveButton(),
       ),
     );
   }
@@ -35,8 +33,8 @@ class EditProfileScreen extends StatelessWidget {
               'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
           editable: true,
         ),
-        Consumer<Profile>(
-          builder: (context, profile, child) {
+        Consumer2<Profile, EditProfileValidation>(
+          builder: (context, profile, validation, _) {
             return Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
@@ -46,22 +44,25 @@ class EditProfileScreen extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Expanded(
-                        child: TextField(
+                        child: TextFormField(
+                          initialValue: profile.user.firstName,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: accentColor,
                               ),
                             ),
+                            
                             labelText: 'First Name',
+                            errorText: validation.firstName.error,
                           ),
-                          controller: TextEditingController()
-                            ..text = profile.user.firstName,
+                          onChanged: validation.changeFirstName,
                         ),
                       ),
                       SizedBox(width: 20.0),
                       Expanded(
-                        child: TextField(
+                        child: TextFormField(
+                          initialValue: profile.user.lastName,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -69,15 +70,16 @@ class EditProfileScreen extends StatelessWidget {
                               ),
                             ),
                             labelText: 'Last Name',
+                            errorText: validation.lastName.error,
                           ),
-                          controller: TextEditingController()
-                            ..text = profile.user.lastName,
+                          onChanged: validation.changeLastName,
                         ),
                       ),
                     ],
                   ),
                   SizedBox(height: 30.0),
-                  TextField(
+                  TextFormField(
+                    initialValue: profile.user.username,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderSide: BorderSide(
@@ -85,9 +87,9 @@ class EditProfileScreen extends StatelessWidget {
                         ),
                       ),
                       labelText: 'Username',
+                      errorText: validation.username.error
                     ),
-                    controller: TextEditingController()
-                      ..text = profile.user.username,
+                    onChanged: validation.changeUsername,
                   ),
                 ],
               ),
@@ -96,5 +98,17 @@ class EditProfileScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget buildSaveButton() {
+    return Consumer<EditProfileValidation>(
+        builder: (context, editProfileValidation, _) {
+      return RaisedButton(
+        disabledColor: accentColor,
+        disabledTextColor: Colors.white,
+        onPressed: !editProfileValidation.isValidSubmit ? null : () {},
+        child: Text('Save'),
+      );
+    });
   }
 }

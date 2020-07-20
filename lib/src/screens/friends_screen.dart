@@ -16,6 +16,13 @@ class FriendsScreen extends StatelessWidget {
           style: TextStyle(color: Colors.black, fontStyle: FontStyle.italic),
         ),
         backgroundColor: Colors.white,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.group_add),
+            color: Colors.black,
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Column(
         children: <Widget>[

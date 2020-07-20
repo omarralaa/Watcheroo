@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:watcherooflutter/src/providers/edit_profile_validation.dart';
 import 'package:watcherooflutter/src/providers/profile.dart';
 import 'package:watcherooflutter/src/screens/edit_profile_screen.dart';
 import 'package:watcherooflutter/src/screens/tabs_screen.dart';
@@ -67,7 +68,11 @@ class MyApp extends StatelessWidget {
                     create: (ctx) => CreateParty(),
                     child: CreatePartyScreen(),
                   ),
-              EditProfileScreen.routeName: (ctx) => EditProfileScreen(),
+              EditProfileScreen.routeName: (ctx) =>
+                  ChangeNotifierProvider<EditProfileValidation>(
+                    create: (ctx) => EditProfileValidation(),
+                    child: EditProfileScreen(),
+                  ),
               ViewProfileScreen.routeName: (ctx) => ViewProfileScreen(),
             },
           );

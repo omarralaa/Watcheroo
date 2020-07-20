@@ -12,7 +12,7 @@ class CreateParty with ChangeNotifier {
   // GETTERS
   File get file => _file ?? null;
   String get movieName => _movieName;
-  String get URL =>
+  String get url =>
       _file == null ? 'Your file URL will appear here!' : _file.uri.toString();
 
   String get selectedFriend => _selectedFriend;

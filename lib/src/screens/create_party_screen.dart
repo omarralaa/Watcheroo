@@ -62,7 +62,7 @@ class CreatePartyScreen extends StatelessWidget {
       children: <Widget>[
         Consumer<CreateParty>(
           builder: (ctx, createParty, _) =>
-              Expanded(child: Text(createParty.URL ?? '')),
+              Expanded(child: Text(createParty.url ?? '')),
         ),
         RaisedButton(
           child: Text('Select'),
