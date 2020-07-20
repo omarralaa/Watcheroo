@@ -82,7 +82,24 @@ class ProfilePictureHeader extends StatelessWidget {
                   ],
                 ),
               ),
+            _buildBackButton(context),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBackButton(BuildContext context) {
+    return Transform.translate(
+      offset: Offset(0.0, -15.0),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: IconButton(
+          color: Colors.white,
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
     );

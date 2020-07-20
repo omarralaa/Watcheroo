@@ -5,8 +5,17 @@ import 'package:watcherooflutter/src/providers/edit_profile_validation.dart';
 import '../providers/profile.dart';
 import '../widgets/profile_picture_header.dart';
 
-class EditProfileScreen extends StatelessWidget {
+class EditProfileScreen extends StatefulWidget {
   static const String routeName = "/edit-profile";
+
+  @override
+  State<StatefulWidget> createState() {
+    return EditProfileState();
+  }
+}
+
+class EditProfileState extends State<EditProfileScreen> {
+  bool btnEnabled = false;
   Color accentColor;
   Color bgColor;
 
@@ -15,7 +24,8 @@ class EditProfileScreen extends StatelessWidget {
     accentColor = Theme.of(context).accentColor;
     bgColor = Theme.of(context).backgroundColor;
     final userProfile = Provider.of<Profile>(context, listen: false).user;
-    Provider.of<EditProfileValidation>(context, listen: false).initValidation(userProfile);
+    Provider.of<EditProfileValidation>(context, listen: false)
+        .initValidation(userProfile);
     return Scaffold(
       body: buildBody(),
       bottomNavigationBar: Padding(
@@ -52,11 +62,15 @@ class EditProfileScreen extends StatelessWidget {
                                 color: accentColor,
                               ),
                             ),
-                            
                             labelText: 'First Name',
                             errorText: validation.firstName.error,
                           ),
-                          onChanged: validation.changeFirstName,
+                          onChanged: (value) {
+                            validation.changeFirstName(value);
+                            setState(() {
+                              btnEnabled = true;
+                            });
+                          },
                         ),
                       ),
                       SizedBox(width: 20.0),
@@ -72,7 +86,12 @@ class EditProfileScreen extends StatelessWidget {
                             labelText: 'Last Name',
                             errorText: validation.lastName.error,
                           ),
-                          onChanged: validation.changeLastName,
+                          onChanged: (value) {
+                            validation.changeLastName(value);
+                            setState(() {
+                              btnEnabled = true;
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -81,15 +100,19 @@ class EditProfileScreen extends StatelessWidget {
                   TextFormField(
                     initialValue: profile.user.username,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: accentColor,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: accentColor,
+                          ),
                         ),
-                      ),
-                      labelText: 'Username',
-                      errorText: validation.username.error
-                    ),
-                    onChanged: validation.changeUsername,
+                        labelText: 'Username',
+                        errorText: validation.username.error),
+                    onChanged: (value) {
+                      validation.changeUsername(value);
+                      setState(() {
+                        btnEnabled = true;
+                      });
+                    },
                   ),
                 ],
               ),
@@ -106,7 +129,8 @@ class EditProfileScreen extends StatelessWidget {
       return RaisedButton(
         disabledColor: accentColor,
         disabledTextColor: Colors.white,
-        onPressed: !editProfileValidation.isValidSubmit ? null : () {},
+        onPressed:
+            !editProfileValidation.isValidSubmit || !btnEnabled ? null : () {},
         child: Text('Save'),
       );
     });
