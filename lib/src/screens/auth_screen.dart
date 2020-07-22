@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' show Consumer, Provider;
-import '../models/http_exception.dart';
+
+import '../utils/utils.dart';
 import '../providers/auth.dart';
 import '../providers/auth_validation.dart';
 
 import '../widgets/auth_form.dart';
 
-class AuthScreen extends StatelessWidget {
+class AuthScreen extends StatelessWidget with Utils {
   static const String routeName = '/';
 
   @override
@@ -54,12 +55,11 @@ class AuthScreen extends StatelessWidget {
           onPressed: !authValidation.isValid
               ? null
               : () async {
-                  final auth = Provider.of<Auth>(ctx, listen: false);
-                  final err = await authValidation.submitData(auth);
-                  if (err != null)
-                    _showError(err, ctx);
-                  else {
-                    //await Provider.of<Profile>(ctx, listen: false).getProfile();
+                  try {
+                    final auth = Provider.of<Auth>(ctx, listen: false);
+                    await authValidation.submitData(auth);
+                  } catch (err) {
+                    showError(err, ctx);
                   }
                 },
         );
@@ -80,28 +80,5 @@ class AuthScreen extends StatelessWidget {
         },
       );
     });
-  }
-
-  void _showError(err, BuildContext context) {
-    final errorMessage = err is HttpException
-        ? err.message
-        : 'Something wrong happened, try again later.';
-    showDialog(
-      context: context,
-      builder: (ctx) {
-        return AlertDialog(
-          title: Text('Authentication failed'),
-          content: Text(errorMessage),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Try Again'),
-              onPressed: () {
-                Navigator.of(ctx).pop();
-              },
-            )
-          ],
-        );
-      },
-    );
   }
 }

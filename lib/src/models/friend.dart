@@ -21,9 +21,10 @@ class Friend {
 
   static List<Friend> getFriendsFromJson(List<dynamic> mapList) {
     List<Friend> friends = List<Friend>();
-    for (var mapJson in mapList) {
-      friends.add(Friend.fromJson(mapJson));
-    }
+    if (mapList != null)
+      for (var mapJson in mapList) {
+        friends.add(Friend.fromJson(mapJson));
+      }
 
     return friends;
   }

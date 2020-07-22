@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:watcherooflutter/src/providers/add_friend.dart';
 import 'package:watcherooflutter/src/providers/edit_profile_validation.dart';
 import 'package:watcherooflutter/src/providers/profile.dart';
+import 'package:watcherooflutter/src/screens/about_screen.dart';
+import 'package:watcherooflutter/src/screens/add_friend_screen.dart';
 import 'package:watcherooflutter/src/screens/edit_profile_screen.dart';
 import 'package:watcherooflutter/src/screens/tabs_screen.dart';
 import 'package:watcherooflutter/src/screens/view_profile_screen.dart';
@@ -62,6 +65,7 @@ class MyApp extends StatelessWidget {
                     },
                   ),
             routes: {
+              TabsScreen.routeName: (ctx) => TabsScreen(),
               PartyManagementScreen.routeName: (ctx) => PartyManagementScreen(),
               CreatePartyScreen.routeName: (ctx) =>
                   ChangeNotifierProvider<CreateParty>(
@@ -74,6 +78,12 @@ class MyApp extends StatelessWidget {
                     child: EditProfileScreen(),
                   ),
               ViewProfileScreen.routeName: (ctx) => ViewProfileScreen(),
+              AddFriendScreen.routeName: (ctx) =>
+                  ChangeNotifierProvider<AddFriend>(
+                    create: (ctx) => AddFriend(),
+                    child: AddFriendScreen(),
+                  ),
+              AboutScreen.routeName: (ctx) => AboutScreen(),
             },
           );
         },

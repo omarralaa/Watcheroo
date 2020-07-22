@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:watcherooflutter/src/models/auth_response.dart';
 
-class Utils {
+class ServiceUtils {
   final _secureStorage = FlutterSecureStorage();
 
   Future<String> get token async {

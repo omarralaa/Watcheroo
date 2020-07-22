@@ -71,7 +71,7 @@ class AuthValidation with ChangeNotifier {
             email.value.trim(), password.value.trim(), fullName.value);
       }
     } catch (err) {
-      return err;
+      throw err;
     }
     return null;
   }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:watcherooflutter/src/providers/profile.dart';
+import 'package:watcherooflutter/src/screens/about_screen.dart';
 import 'package:watcherooflutter/src/screens/edit_profile_screen.dart';
+import 'package:watcherooflutter/src/screens/party_management_screen.dart';
+import 'package:watcherooflutter/src/screens/tabs_screen.dart';
 import 'package:watcherooflutter/src/widgets/loading_app_bar.dart';
 
 import '../providers/auth.dart';
@@ -17,14 +20,17 @@ class MainDrawer extends StatelessWidget {
               drawerHeader(),
               ListTile(
                 title: Text('Watch Together!!!'),
+                onTap: () => Navigator.of(context).pushReplacementNamed(TabsScreen.routeName),
               ),
               Divider(),
               ListTile(
                 title: Text('Previously Watched'),
+                //onTap: onTap: () => Navigator.of(context).pushReplacementNamed(PartyManagementScreen.routeName),,
               ),
               Divider(),
               ListTile(
                 title: Text('About'),
+                onTap: () => Navigator.of(context).pushReplacementNamed(AboutScreen.routeName),
               ),
             ]),
           ),

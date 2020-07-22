@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:watcherooflutter/src/providers/edit_profile_validation.dart';
+import 'package:watcherooflutter/src/utils/utils.dart';
 
 import '../providers/profile.dart';
 import '../widgets/profile_picture_header.dart';
@@ -14,7 +15,7 @@ class EditProfileScreen extends StatefulWidget {
   }
 }
 
-class EditProfileState extends State<EditProfileScreen> {
+class EditProfileState extends State<EditProfileScreen> with Utils {
   bool btnEnabled = false;
   Color accentColor;
   Color bgColor;
@@ -129,10 +130,21 @@ class EditProfileState extends State<EditProfileScreen> {
       return RaisedButton(
         disabledColor: accentColor,
         disabledTextColor: Colors.white,
-        onPressed:
-            !editProfileValidation.isValidSubmit || !btnEnabled ? null : () {},
+        onPressed: !editProfileValidation.isValidSubmit || !btnEnabled
+            ? null
+            : () {
+                try {
+                  final updatedFields = editProfileValidation.updatedFields;
+                  Provider.of<Profile>(context, listen: false)
+                      .updateProfile(updatedFields);
+                } catch (err) {
+                  showError(err, context);
+                }
+              },
         child: Text('Save'),
       );
     });
   }
+
+  
 }

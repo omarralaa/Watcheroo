@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../screens/add_friend_screen.dart';
+import '../widgets/friend_request_bar.dart';
+import '../widgets/loading_list_tile.dart';
 import '../providers/profile.dart';
 import '../widgets/friend_list_tile.dart';
 
 class FriendsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final profile = Provider.of<Profile>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -20,13 +22,15 @@ class FriendsScreen extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.group_add),
             color: Colors.black,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(AddFriendScreen.routeName);
+            },
           ),
         ],
       ),
       body: Column(
         children: <Widget>[
-          if (profile.user.requests.length != 0) buildFriendRequest(profile.user.requests.length),
+          buildFriendRequest(),
           SizedBox(
             height: 10,
           ),
@@ -36,56 +40,30 @@ class FriendsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildFriendRequest(int numberOfRequests) {
-    return Card(
-      color: Colors.pink,
-      child: ListTile(
-        leading: Icon(
-          Icons.notifications_active,
-          color: Colors.white,
-        ),
-        title: Text(
-          'Friend Request',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-        ),
-        trailing: GestureDetector(
-          child: Wrap(
-            spacing: 0,
-            alignment: WrapAlignment.center,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 12),
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  border: Border.all(width: 2, color: Colors.white),
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                ),
-                child: Text('$numberOfRequests',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w400)),
-              ),
-              Icon(
-                Icons.chevron_right,
-                color: Colors.white,
-              )
-            ],
-          ),
-          onTap: () {},
-        ),
-      ),
+  Widget buildFriendRequest() {
+    return Consumer<Profile>(
+      builder: (ctx, profile, _) {
+        if (profile.user != null && profile.user.requests.length != 0) {
+          return FriendRequestBar();
+        }
+
+        return SizedBox();
+      },
     );
   }
 
   Widget buildListView() {
-    return Consumer<Profile>(builder: (context, profile, _) {
-      return Expanded(
-        child: ListView.builder(
-          itemCount: profile.user.friends.length,
-          itemBuilder: (context, index) =>
-              FriendListTile(profile.user.friends[index]),
-        ),
-      );
-    });
+    return Consumer<Profile>(
+      builder: (context, profile, child) {
+        return Expanded(
+          child: ListView.builder(
+            itemCount: profile.user == null ? 3 : profile.user.friends.length,
+            itemBuilder: (context, index) => profile.user == null
+                ? LoadingListTile()
+                : FriendListTile(profile.user.friends[index]),
+          ),
+        );
+      },
+    );
   }
 }

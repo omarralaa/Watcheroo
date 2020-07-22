@@ -4,6 +4,8 @@ import '../screens/friends_screen.dart';
 import '../screens/party_management_screen.dart';
 
 class TabsScreen extends StatefulWidget {
+  static const String routeName = '/tabs';
+
   @override
   _TabsScreenState createState() => _TabsScreenState();
 }
