@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:watcherooflutter/src/widgets/main_drawer.dart';
+
+import '../widgets/main_drawer.dart';
 
 class AboutScreen extends StatelessWidget {
   static const String routeName = '/about';

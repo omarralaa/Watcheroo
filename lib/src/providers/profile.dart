@@ -8,9 +8,10 @@ import '../models/user_profile.dart';
 class Profile extends ChangeNotifier {
   UserProfile _user;
 
-  UserProfile get user => _user;
   final _profileService = ProfileService();
   final _friendService = FriendService();
+
+  UserProfile get user => _user;
 
   Future<void> getProfile() async {
     try {
@@ -19,6 +20,14 @@ class Profile extends ChangeNotifier {
     } catch (err) {
       throw err;
     }
+  }
+
+    Friend getFriendById(String id) {
+    return user.friends.firstWhere((friend) => friend.id == id);
+  }
+
+  Friend getFriendByUsername(String username) {
+    return user.friends.firstWhere((friend) => friend.username == username);
   }
 
   bool hasFriendbyUsername(String username) {
@@ -64,8 +73,8 @@ class Profile extends ChangeNotifier {
     }
   }
 
-  void addFriendRequest(Friend friend) {
-    _user.sentRequests.add(friend);
-    notifyListeners();
-  }
+  // void addFriendRequest(Friend friend) {
+  //   _user.sentRequests.add(friend);
+  //   notifyListeners();
+  // }
 }

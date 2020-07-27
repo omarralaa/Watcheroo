@@ -8,11 +8,9 @@ import 'package:watcherooflutter/src/widgets/profile_picture_header.dart';
 class ViewProfileScreen extends StatelessWidget {
   static const routeName = '/view-profile';
 
-  var viewedProfile;
-
   @override
   Widget build(BuildContext context) {
-    viewedProfile = ModalRoute.of(context).settings.arguments;
+    final viewedProfile = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -30,7 +28,7 @@ class ViewProfileScreen extends StatelessWidget {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: buildViewTogetherButton(),
+        child: buildViewTogetherButton(viewedProfile),
       ),
     );
   }
@@ -60,7 +58,7 @@ class ViewProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget buildViewTogetherButton() {
+  Widget buildViewTogetherButton(viewedProfile) {
     return Consumer<Profile>(builder: (context, profile, _) {
       return RaisedButton(
         padding: EdgeInsets.all(10),

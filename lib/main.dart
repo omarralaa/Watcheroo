@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:watcherooflutter/src/providers/add_friend.dart';
-import 'package:watcherooflutter/src/providers/edit_profile_validation.dart';
-import 'package:watcherooflutter/src/providers/profile.dart';
-import 'package:watcherooflutter/src/screens/about_screen.dart';
-import 'package:watcherooflutter/src/screens/add_friend_screen.dart';
-import 'package:watcherooflutter/src/screens/edit_profile_screen.dart';
-import 'package:watcherooflutter/src/screens/tabs_screen.dart';
-import 'package:watcherooflutter/src/screens/view_profile_screen.dart';
+import 'package:watcherooflutter/src/screens/ready_screen.dart';
 
+import './src/providers/add_friend.dart';
+import './src/providers/edit_profile_validation.dart';
+import './src/providers/profile.dart';
+import './src/providers/ready.dart';
+import './src/screens/about_screen.dart';
+import './src/screens/add_friend_screen.dart';
+import './src/screens/edit_profile_screen.dart';
+import 'src/screens/ready_screen.dart';
+import './src/screens/tabs_screen.dart';
+import './src/screens/view_profile_screen.dart';
 import './src/providers/auth.dart';
 import './src/screens/splash_screen.dart';
 import './src/providers/auth_validation.dart';
@@ -84,6 +87,10 @@ class MyApp extends StatelessWidget {
                     child: AddFriendScreen(),
                   ),
               AboutScreen.routeName: (ctx) => AboutScreen(),
+              ReadyScreen.routeName: (ctx) => ChangeNotifierProvider<Ready>(
+                    create: (ctx) => Ready(),
+                    child: ReadyScreen(),
+                  ),
             },
           );
         },

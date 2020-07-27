@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:watcherooflutter/src/models/validation_item.dart';
-import 'package:watcherooflutter/src/services/profile_service.dart';
 
 class EditProfileValidation with ChangeNotifier {
   ValidationItem _firstName = ValidationItem(null, null);

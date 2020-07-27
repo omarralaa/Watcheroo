@@ -2,12 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:video_player/video_player.dart';
+import 'package:watcherooflutter/src/models/party.dart';
+import 'package:watcherooflutter/src/services/party_service.dart';
 
 class CreateParty with ChangeNotifier {
   File _file;
   String _movieName;
   Duration _movieDuration;
   String _selectedFriend;
+
+  PartyService _partyService = PartyService();
 
   // GETTERS
   File get file => _file ?? null;
@@ -52,5 +56,14 @@ class CreateParty with ChangeNotifier {
   void selectFriend(String friend) {
     _selectedFriend = friend;
     notifyListeners();
+  }
+
+  Future<Party> createParty(String friendId) async {
+    try {
+      final party = await _partyService.createParty(friendId, _movieName);
+      return party;
+    } catch (err) {
+      throw(err);
+    }
   }
 }

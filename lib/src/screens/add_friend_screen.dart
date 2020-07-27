@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:watcherooflutter/src/models/friend.dart';
-import 'package:watcherooflutter/src/providers/profile.dart';
 
+import '../models/friend.dart';
+import '../providers/profile.dart';
 import '../providers/add_friend.dart';
 
 class AddFriendScreen extends StatelessWidget {
@@ -70,7 +70,6 @@ class AddFriendScreen extends StatelessWidget {
             suffixIcon: Icon(Icons.search),
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(30))),
-        controller: searchedFriendController,
         onSubmitted: (val) {
           if (val.trim() != '')
             Provider.of<AddFriend>(context, listen: false)
@@ -136,7 +135,7 @@ class AddFriendScreen extends StatelessWidget {
               ? null
               : () async {
                   final result = await addFriend.sendFriendRequest(friend.id);
-                  if (result) profile.addFriendRequest(friend);
+                  if (result) await profile.getProfile();
                 },
         );
       },

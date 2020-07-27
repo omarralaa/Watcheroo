@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:watcherooflutter/src/providers/profile.dart';
+import 'package:watcherooflutter/src/screens/ready_screen.dart';
 
+import '../providers/profile.dart';
 import '../providers/create_party.dart';
 
 class CreatePartyScreen extends StatelessWidget {
@@ -27,22 +28,19 @@ class CreatePartyScreen extends StatelessWidget {
               SizedBox(height: 20),
               _buildFileRow(context),
               SizedBox(height: 20),
-              Divider(
-                thickness: 1,
-              ),
+              Divider(thickness: 1),
               SizedBox(height: 20),
               _buildMovieDuration(),
               SizedBox(height: 20),
-              Divider(
-                thickness: 1,
-              ),
+              Divider(thickness: 1),
               SizedBox(height: 20),
               _buildComboBox(),
+              _buildLaunchButton(),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: _buildLaunchButton(),
+      //bottomNavigationBar: _buildLaunchButton(),
     );
   }
 
@@ -93,6 +91,7 @@ class CreatePartyScreen extends StatelessWidget {
       return DropdownButton(
         value: valueOfFriend(createParty),
         elevation: 20,
+        isExpanded: true,
         icon: Icon(Icons.account_circle),
         iconSize: 24,
         items: userProfile.friends
@@ -116,14 +115,14 @@ class CreatePartyScreen extends StatelessWidget {
       isFirst = false;
       createParty.selectFriend(friendProfile.username);
     }
-      return createParty.selectedFriend;
-    
+    return createParty.selectedFriend;
   }
 
   Widget _buildLaunchButton() {
     return Consumer<CreateParty>(
       builder: (context, createParty, _) {
         return Container(
+          alignment: Alignment.bottomCenter,
           width: 300,
           padding: EdgeInsets.all(10),
           child: RaisedButton(
@@ -131,11 +130,38 @@ class CreatePartyScreen extends StatelessWidget {
               'Launch Party Now!',
               style: TextStyle(fontSize: 15),
             ),
-            onPressed: !createParty.isValidSubmit ? null : () {},
+            onPressed: !createParty.isValidSubmit
+                ? null
+                : () => _submitNewParty(context, createParty),
           ),
         );
       },
     );
+  }
+
+  void _submitNewParty(BuildContext context, CreateParty createParty) async {
+    try {
+      final profile = Provider.of<Profile>(context, listen: false);
+
+      final friend = profile.getFriendByUsername(createParty.selectedFriend);
+      final party = await createParty.createParty(friend.id);
+
+      Navigator.of(context)
+          .pushReplacementNamed(ReadyScreen.routeName, arguments: {
+        'party': party,
+        'friend': friend,
+        'roomId': profile.user.id,
+      });
+    } catch (err) {
+      _showSnackBarError(context);
+    }
+  }
+
+  void _showSnackBarError(BuildContext context) {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text('Could not create a party!'),
+      duration: Duration(milliseconds: 1500),
+    ));
   }
 
   void _selectFile(BuildContext context) async {

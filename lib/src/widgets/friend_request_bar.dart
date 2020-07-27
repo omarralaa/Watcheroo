@@ -25,15 +25,19 @@ class FriendRequestBar extends StatelessWidget {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: <Widget>[
               Container(
+                width: 30,
+                height: 30,
                 margin: const EdgeInsets.symmetric(vertical: 12),
-                padding: const EdgeInsets.all(5),
+                padding: const EdgeInsets.all(3),
                 decoration: BoxDecoration(
                   border: Border.all(width: 2, color: Colors.white),
                   borderRadius: BorderRadius.all(Radius.circular(8)),
                 ),
-                child: Text('${profile.user.requests.length}',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w400)),
+                child: Center(
+                  child: Text('${profile.user.requests.length}',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w400)),
+                ),
               ),
               Icon(
                 Icons.chevron_right,

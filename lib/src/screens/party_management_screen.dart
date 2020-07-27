@@ -26,7 +26,6 @@ class PartyManagementScreen extends StatelessWidget {
         child: Icon(Icons.add),
       ),
       drawer: MainDrawer(),
-      endDrawer: Drawer(),
     );
   }
 

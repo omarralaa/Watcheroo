@@ -1,6 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:watcherooflutter/src/models/friend.dart';
-import 'package:watcherooflutter/src/services/friend_service.dart';
+import 'package:flutter/material.dart';
+
+
+import '../models/friend.dart';
+import '../services/friend_service.dart';
 
 class AddFriend with ChangeNotifier {
   final _friendService = FriendService();

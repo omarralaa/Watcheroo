@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "970023312614",
+    "firebase_url": "https://watcheroo.firebaseio.com",
+    "project_id": "watcheroo",
+    "storage_bucket": "watcheroo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:970023312614:android:b13f00947925e63acf6f27",
+        "android_client_info": {
+          "package_name": "com.example.watcherooflutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "970023312614-g44j91cf9tpj0cu1v2ggi3lsg4b25l6s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGbQwwpmDWJjLjrCrN7p98QWYNFsSj0QU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "970023312614-g44j91cf9tpj0cu1v2ggi3lsg4b25l6s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
