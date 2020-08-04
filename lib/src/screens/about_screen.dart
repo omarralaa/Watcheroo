@@ -15,7 +15,7 @@ class AboutScreen extends StatelessWidget {
       body:  Container(
           padding: EdgeInsets.all(20),
           child: Text(
-            'This application is a produced by White Mirror company all copyrights are reserved.\n\nOmar Alaa & Yosra Emad',
+            'Application is developed and maintained by Omar Alaa.',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
         ),

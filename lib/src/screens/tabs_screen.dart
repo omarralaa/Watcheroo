@@ -1,4 +1,6 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:watcherooflutter/src/utils/notificationHandlers.dart';
 
 import '../screens/friends_screen.dart';
 import '../screens/party_management_screen.dart';
@@ -27,6 +29,7 @@ class _TabsScreenState extends State<TabsScreen> {
       },
     ];
 
+    NotificationHandlers().handleNotifications();
     super.initState();
   }
 

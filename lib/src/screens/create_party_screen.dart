@@ -146,12 +146,15 @@ class CreatePartyScreen extends StatelessWidget {
       final friend = profile.getFriendByUsername(createParty.selectedFriend);
       final party = await createParty.createParty(friend.id);
 
-      Navigator.of(context)
-          .pushReplacementNamed(ReadyScreen.routeName, arguments: {
-        'party': party,
-        'friend': friend,
-        'roomId': profile.user.id,
-      });
+      Navigator.of(context).pushReplacementNamed(
+        ReadyScreen.routeName,
+        arguments: {
+          'party': party,
+          'fileName': createParty.file,
+          'friend': friend,
+          'roomId': profile.user.id,
+        },
+      );
     } catch (err) {
       _showSnackBarError(context);
     }
@@ -164,6 +167,7 @@ class CreatePartyScreen extends StatelessWidget {
     ));
   }
 
+  // TODO: MOVE THIS TO CREATE PARTY 
   void _selectFile(BuildContext context) async {
     File file = await FilePicker.getFile(type: FileType.video);
     Provider.of<CreateParty>(context, listen: false).setMetaData(file);

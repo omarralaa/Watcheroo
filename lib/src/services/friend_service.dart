@@ -4,7 +4,7 @@ import 'package:http/http.dart' show post, get;
 
 import '../models/friend.dart';
 import '../models/http_exception.dart';
-import '../services/utils/service_utils.dart';
+import './servicesUtils/service_utils.dart';
 
 class FriendService with ServiceUtils {
   final String url = "http://10.0.2.2:3000/api/v1/profiles";

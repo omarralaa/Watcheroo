@@ -2,12 +2,14 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class WatchSocket {
   static IO.Socket _socket;
-
     static final WatchSocket _watchSocketSingleton = WatchSocket._internal();
 
   factory WatchSocket() {
     return _watchSocketSingleton;
   }
+
+  Function _startPartyCallback;
+  Function _updatePartyCallBack;
 
   WatchSocket._internal();
 
@@ -19,9 +21,14 @@ class WatchSocket {
     return _socket;
   }
 
-  // static IO.Socket getInstance() {
-  //   return socket;
-  // }
+  // SETTERS
+  void setStartPartyCallback(callback) {
+    _startPartyCallback = callback;
+  }
+
+    void setUpdatePartyCallback(callback) {
+    _updatePartyCallBack = callback;
+  }
 
   void _connectSocket(String roomId, String profileId) {
     _socket = IO.io('http://10.0.2.2:3000/watch', <String, dynamic>{
@@ -33,6 +40,10 @@ class WatchSocket {
 
     _socket.on('connect', _socketStatus);
 
+    _socket.on('updateReady', _updateReady);
+
+    _socket.on('startParty', _startParty);
+
     //connect socket
     _socket.connect();
   }
@@ -43,5 +54,13 @@ class WatchSocket {
 
   _socketStatus(dynamic data) {
     print('Conncted to the server');
+  }
+
+  _updateReady(dynamic data) {
+    _updatePartyCallBack(data);
+  }
+
+  _startParty(dynamic data) {
+    _startPartyCallback();
   }
 }

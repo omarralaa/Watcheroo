@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:watcherooflutter/src/models/friend.dart';
-import 'package:watcherooflutter/src/models/party.dart';
-import 'package:watcherooflutter/src/providers/profile.dart';
-import 'package:watcherooflutter/src/providers/ready.dart';
-import 'package:watcherooflutter/src/sockets/watchSocket.dart';
-import 'package:watcherooflutter/src/widgets/ready_background.dart';
+
+import '../models/friend.dart';
+import '../models/party.dart';
+import '../providers/profile.dart';
+import '../providers/ready.dart';
+import '../sockets/watchSocket.dart';
+import '../widgets/ready_background.dart';
 
 class ReadyScreen extends StatelessWidget {
   static const String routeName = '/ready';
@@ -71,7 +72,7 @@ class ReadyScreen extends StatelessWidget {
       child: Consumer<Ready>(
         builder: (context, ready, child) {
           final firstName = ready.friend.firstName;
-          return ready.isFriendReady
+          return !ready.isFriendReady
               ? Text(
                   'Waiting for $firstName to be ready',
                   style: TextStyle(

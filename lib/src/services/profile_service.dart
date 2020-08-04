@@ -4,7 +4,8 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:watcherooflutter/src/models/user_profile.dart';
 import 'package:http/http.dart' show get;
-import 'package:watcherooflutter/src/services/utils/service_utils.dart';
+
+import './servicesUtils/service_utils.dart';
 
 class ProfileService with ServiceUtils {
   final String url = "http://10.0.2.2:3000/api/v1/profiles/me";
@@ -61,4 +62,6 @@ class ProfileService with ServiceUtils {
       throw error;
     }
   }
+
+ 
 }

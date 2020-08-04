@@ -30,6 +30,7 @@ dependencies:
   flutter_socket_io: ^0.6.0
   socket_io_client: ^0.9.4
   firebase_messaging: ^6.0.16
+  get_it: ^4.0.4
   flutter:
     sdk: flutter
 

@@ -22,7 +22,8 @@ class Profile extends ChangeNotifier {
     }
   }
 
-    Friend getFriendById(String id) {
+  Friend getFriendById(String id) {
+    print(user.friends);
     return user.friends.firstWhere((friend) => friend.id == id);
   }
 

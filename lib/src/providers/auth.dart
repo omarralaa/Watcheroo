@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -64,8 +65,12 @@ class Auth with ChangeNotifier {
       _authTimer = null;
     }
 
+
+    _authService.logout();
+    FirebaseMessaging().deleteInstanceID();
     notifyListeners();
-    await _flutterSecureStorage.delete(key: 'jsonAuth');
+
+    _flutterSecureStorage.delete(key: 'jsonAuth');
   }
 
   Future<bool> tryAutoLogin() async {

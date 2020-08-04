@@ -11,30 +11,31 @@ class ReadyBackground extends StatelessWidget {
         final width = constraint.maxWidth;
 
         return Consumer<Ready>(
-            child: Positioned(
-              left: 0,
-              bottom: 0,
-              child: Container(
-                width: height,
-                height: height * .98,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                ),
+          child: Positioned(
+            left: 0,
+            bottom: 0,
+            child: Container(
+              width: height,
+              height: height * .98,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
               ),
             ),
-            builder: (context, ready, child) {
-              return Stack(
-                children: <Widget>[
-                  Container(
-                    color: ready.isUserReady
-                        ? Theme.of(context).primaryColor
-                        : Colors.amberAccent,
-                  ),
-                  child,
-                ],
-              );
-            });
+          ),
+          builder: (context, ready, child) {
+            return Stack(
+              children: <Widget>[
+                Container(
+                  color: ready.isUserReady
+                      ? Theme.of(context).primaryColor
+                      : Colors.amberAccent,
+                ),
+                child,
+              ],
+            );
+          },
+        );
       },
     );
   }
