@@ -28,42 +28,40 @@ class FriendsScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          buildFriendRequest(),
-          SizedBox(
-            height: 10,
-          ),
-          buildListView(),
-        ],
-      ),
+      body: _buildBody(),
     );
   }
 
-  Widget buildFriendRequest() {
+  Widget _buildBody() {
     return Consumer<Profile>(
       builder: (ctx, profile, _) {
-        if (profile.user != null && profile.user.requests.length != 0) {
-          return FriendRequestBar();
-        }
-
-        return SizedBox();
+        return Column(
+          children: <Widget>[
+            _buildFriendRequest(profile),
+            SizedBox(height: 10),
+            _buildListView(profile),
+          ],
+        );
       },
     );
   }
 
-  Widget buildListView() {
-    return Consumer<Profile>(
-      builder: (context, profile, child) {
-        return Expanded(
-          child: ListView.builder(
-            itemCount: profile.user == null ? 3 : profile.user.friends.length,
-            itemBuilder: (context, index) => profile.user == null
-                ? LoadingListTile()
-                : FriendListTile(profile.user.friends[index]),
-          ),
-        );
-      },
+  Widget _buildFriendRequest(profile) {
+    if (profile.user != null && profile.user.requests.length != 0) {
+      return FriendRequestBar();
+    }
+
+    return SizedBox();
+  }
+
+  Widget _buildListView(profile) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: profile.user == null ? 3 : profile.user.friends.length,
+        itemBuilder: (context, index) => profile.user == null
+            ? LoadingListTile()
+            : FriendListTile(profile.user.friends[index]),
+      ),
     );
   }
 }

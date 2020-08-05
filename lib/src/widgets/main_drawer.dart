@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:watcherooflutter/src/providers/profile.dart';
-import 'package:watcherooflutter/src/screens/about_screen.dart';
-import 'package:watcherooflutter/src/screens/edit_profile_screen.dart';
-import 'package:watcherooflutter/src/screens/party_management_screen.dart';
-import 'package:watcherooflutter/src/screens/tabs_screen.dart';
-import 'package:watcherooflutter/src/widgets/loading_app_bar.dart';
 
+import '../providers/profile.dart';
+import '../screens/about_screen.dart';
+import '../screens/edit_profile_screen.dart';
+import '../screens/tabs_screen.dart';
+import '../widgets/loading_app_bar.dart';
 import '../providers/auth.dart';
 
 class MainDrawer extends StatelessWidget {

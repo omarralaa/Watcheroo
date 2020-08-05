@@ -3,12 +3,21 @@ import 'package:provider/provider.dart';
 
 import '../models/friend.dart';
 import '../providers/profile.dart';
-import '../providers/add_friend.dart';
+import '../providers/friends.dart';
 
-class AddFriendScreen extends StatelessWidget {
+class AddFriendScreen extends StatefulWidget {
   static const routeName = '/add-friend';
 
+  @override
+  _AddFriendScreenState createState() => _AddFriendScreenState();
+}
+
+class _AddFriendScreenState extends State<AddFriendScreen> {
   final searchedFriendController = TextEditingController();
+
+  Friend _friend;
+  bool _isSearching = false;
+  bool _isSendingRequest = false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +34,9 @@ class AddFriendScreen extends StatelessWidget {
           padding: EdgeInsets.all(15),
           child: Column(
             children: <Widget>[
-              _buildSearchBar(context),
+              _buildSearchBar(),
               SizedBox(height: 30),
-              _buildFoundFriend(context),
+              _buildFoundFriend(),
             ],
           ),
         ),
@@ -35,64 +44,59 @@ class AddFriendScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFoundFriend(BuildContext context) {
-    return Consumer<AddFriend>(
-      builder: (context, addFriend, child) {
-        return addFriend.friend == null
-            ? SizedBox()
-            : Card(
-                elevation: 8,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                child: Container(
-                  width: 500,
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    children: <Widget>[
-                      _buildFriendData(context, addFriend.friend),
-                      SizedBox(height: 30),
-                      _buildAddingButton(context, addFriend.friend),
-                    ],
-                  ),
-                ),
-              );
-      },
-    );
-  }
-
-  Widget _buildSearchBar(BuildContext context) {
+  Widget _buildSearchBar() {
     return Container(
       height: 50,
       child: TextField(
         decoration: InputDecoration(
-            labelText: 'Search by username',
-            hintText: 'ex: JohnDoe123',
-            suffixIcon: Icon(Icons.search),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(30))),
-        onSubmitted: (val) {
-          if (val.trim() != '')
-            Provider.of<AddFriend>(context, listen: false)
-                .searchFriendByUsername(val);
-        },
+          labelText: 'Search by username',
+          hintText: 'ex: JohnDoe123',
+          suffixIcon: Icon(Icons.search),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+        enabled: !_isSearching,
+        onSubmitted: searchNewFriend,
       ),
     );
   }
 
-  Widget _buildFriendData(BuildContext context, Friend friend) {
+  Widget _buildFoundFriend() {
+    return _friend == null
+        ? _isSearching ? CircularProgressIndicator() : SizedBox()
+        : Card(
+            elevation: 8,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            child: Container(
+              width: 500,
+              padding: EdgeInsets.all(20),
+              child: Column(
+                children: <Widget>[
+                  _buildFriendData(),
+                  SizedBox(height: 30),
+                  _buildAddingButton(),
+                ],
+              ),
+            ),
+          );
+  }
+
+  Widget _buildFriendData() {
     return Column(
       children: <Widget>[
         CircleAvatar(
-          child: Text(friend.firstName[0].toUpperCase()),
+          child: Text(_friend.firstName[0].toUpperCase()),
           radius: 30,
         ),
         SizedBox(height: 10),
         Text(
-          '${friend.firstName} ${friend.lastName}',
+          '${_friend.firstName} ${_friend.lastName}',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
         ),
         Text(
-          friend.username,
+          _friend.username,
           style: TextStyle(
             fontSize: 15,
             color: Theme.of(context).primaryColorDark,
@@ -102,11 +106,11 @@ class AddFriendScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAddingButton(BuildContext context, Friend friend) {
+  Widget _buildAddingButton() {
     final profile = Provider.of<Profile>(context);
 
-    final isFriend = profile.hasFriendbyUsername(friend.username);
-    final isRequestSent = profile.hasFriendRequestbyUsername(friend.username);
+    final isFriend = profile.hasFriendbyUsername(_friend.username);
+    final isRequestSent = profile.hasFriendRequestbyUsername(_friend.username);
 
     return isFriend
         ? Text(
@@ -122,23 +126,41 @@ class AddFriendScreen extends StatelessWidget {
                     fontStyle: FontStyle.italic,
                     color: Theme.of(context).accentColor),
               )
-            : _buildAddFriendButton(friend, profile);
+            : _buildAddFriendButton(profile);
   }
 
-  Widget _buildAddFriendButton(Friend friend, Profile profile) {
-    return Consumer<AddFriend>(
-      builder: (context, addFriend, child) {
-        return RaisedButton(
-          child: Text('Add Friend'),
-          color: Colors.amberAccent[200],
-          onPressed: addFriend.isLoadingFriendRequest
-              ? null
-              : () async {
-                  final result = await addFriend.sendFriendRequest(friend.id);
-                  if (result) await profile.getProfile();
-                },
-        );
-      },
+  Widget _buildAddFriendButton(Profile profile) {
+    return RaisedButton(
+      child: Text('Add Friend'),
+      color: Colors.amberAccent[200],
+      onPressed: _isSendingRequest
+          ? null
+          : () async {
+              setState(() => _isSendingRequest = true);
+              final friends = Provider.of<Friends>(context, listen: false);
+              final result = await friends.sendFriendRequest(_friend.id);
+              if (result) await profile.getProfile();
+              setState(() => _isSendingRequest = false);
+            },
     );
+  }
+
+  Future<void> searchNewFriend(String val) async {
+    if (val.trim() != '') {
+      setState(() => _isSearching = true);
+      try {
+        final friend = await Provider.of<Friends>(context, listen: false)
+            .searchFriendByUsername(val);
+        setState(() {
+          _friend = friend;
+          _isSearching = false;
+        });
+      } catch (err) {
+        setState(() {
+          _friend = null;
+          _isSearching = false;
+        });
+      }
+    }
   }
 }

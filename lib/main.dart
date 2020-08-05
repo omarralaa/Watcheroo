@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:watcherooflutter/src/providers/accept_invitation.dart';
-import 'package:watcherooflutter/src/screens/movie_screen.dart';
-import 'package:watcherooflutter/src/utils/navigation_service.dart';
-import 'package:watcherooflutter/src/utils/service_locator.dart';
 
+import './src/providers/accept_invitation.dart';
+import './src/providers/friends.dart';
+import './src/screens/movie_screen.dart';
+import './src/utils/navigation_service.dart';
+import './src/utils/service_locator.dart';
 import './src/screens/accept_invitation_screen.dart';
 import './src/screens/ready_screen.dart';
-import './src/providers/add_friend.dart';
 import './src/providers/edit_profile_validation.dart';
 import './src/providers/profile.dart';
 import './src/providers/ready.dart';
@@ -40,6 +40,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<Profile>(
           create: (ctx) => Profile(),
         ),
+        ChangeNotifierProvider<Friends>(
+          create: (ctx) => Friends(),
+        )
       ],
       child: Consumer<Auth>(
         builder: (context, auth, _) {
@@ -83,11 +86,7 @@ class MyApp extends StatelessWidget {
                     child: EditProfileScreen(),
                   ),
               ViewProfileScreen.routeName: (ctx) => ViewProfileScreen(),
-              AddFriendScreen.routeName: (ctx) =>
-                  ChangeNotifierProvider<AddFriend>(
-                    create: (ctx) => AddFriend(),
-                    child: AddFriendScreen(),
-                  ),
+              AddFriendScreen.routeName: (ctx) => AddFriendScreen(),
               AboutScreen.routeName: (ctx) => AboutScreen(),
               ReadyScreen.routeName: (ctx) => ChangeNotifierProvider<Ready>(
                     create: (ctx) => Ready(),
@@ -98,7 +97,7 @@ class MyApp extends StatelessWidget {
                     create: (ctx) => AcceptInvitation(),
                     child: AcceptInvitationScreen(),
                   ),
-                  MovieScreen.routeName: (ctx) => MovieScreen(),
+              MovieScreen.routeName: (ctx) => MovieScreen(),
             },
           );
         },
