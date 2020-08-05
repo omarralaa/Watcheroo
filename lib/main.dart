@@ -18,7 +18,6 @@ import './src/screens/tabs_screen.dart';
 import './src/screens/view_profile_screen.dart';
 import './src/providers/auth.dart';
 import './src/screens/splash_screen.dart';
-import './src/providers/auth_validation.dart';
 import './src/screens/party_management_screen.dart';
 import './src/screens/auth_screen.dart';
 import './src/screens/create_party_screen.dart';
@@ -67,10 +66,7 @@ class MyApp extends StatelessWidget {
                     builder: (context, snapshot) {
                       return snapshot.connectionState == ConnectionState.waiting
                           ? SplashScreen()
-                          : ChangeNotifierProvider<AuthValidation>(
-                              create: (ctx) => AuthValidation(),
-                              child: AuthScreen(),
-                            );
+                          : AuthScreen();
                     },
                   ),
             routes: {

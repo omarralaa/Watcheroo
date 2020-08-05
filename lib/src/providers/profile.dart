@@ -73,9 +73,4 @@ class Profile extends ChangeNotifier {
       throw (err);
     }
   }
-
-  // void addFriendRequest(Friend friend) {
-  //   _user.sentRequests.add(friend);
-  //   notifyListeners();
-  // }
 }

@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart' show Consumer, Provider;
-
-import '../utils/utils.dart';
-import '../providers/auth.dart';
-import '../providers/auth_validation.dart';
 
 import '../widgets/auth_form.dart';
 
-class AuthScreen extends StatelessWidget with Utils {
+class AuthScreen extends StatelessWidget {
   static const String routeName = '/';
 
   @override
@@ -33,11 +28,6 @@ class AuthScreen extends StatelessWidget with Utils {
                     ),
                   ),
                   AuthForm(),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  _loginButton(),
-                  _switchLoginButton(),
                 ],
               ),
             ),
@@ -47,38 +37,4 @@ class AuthScreen extends StatelessWidget with Utils {
     );
   }
 
-  Widget _loginButton() {
-    return Consumer<AuthValidation>(
-      builder: (ctx, authValidation, _) {
-        return RaisedButton(
-          child: Text(authValidation.isLogin ? 'Login' : 'Register'),
-          onPressed: !authValidation.isValid
-              ? null
-              : () async {
-                  try {
-                    final auth = Provider.of<Auth>(ctx, listen: false);
-                    await authValidation.submitData(auth);
-                  } catch (err) {
-                    showError(err, ctx);
-                  }
-                },
-        );
-      },
-    );
-  }
-
-  Widget _switchLoginButton() {
-    return Consumer<AuthValidation>(builder: (context, authValidation, _) {
-      return FlatButton(
-        child: Text(
-          authValidation.isLogin
-              ? 'Not a user? Register now'
-              : 'Already a user? Login now',
-        ),
-        onPressed: () {
-          authValidation.changeLogin();
-        },
-      );
-    });
-  }
 }
