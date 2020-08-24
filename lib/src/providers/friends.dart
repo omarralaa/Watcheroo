@@ -6,7 +6,7 @@ import 'package:watcherooflutter/src/utils/service_locator.dart';
 
 class Friends with ChangeNotifier {
 
-  Friend _friend = null;
+  Friend _friend;
 
   final _friendService = locator<FriendService>();
 

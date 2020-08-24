@@ -21,6 +21,10 @@ class UserProfile {
   List<Friend> get requests => _requests;
   List<Friend> get sentRequests => _sentRequests;
 
+  String get imageUrl {
+    return 'http://10.0.2.2:3000/uploads/$photo';
+  }
+
   UserProfile.fromJson(Map<String, dynamic> json) {
     _id = json['_id'];
     _username = json['username'];

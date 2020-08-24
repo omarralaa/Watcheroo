@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:watcherooflutter/src/providers/party.dart';
+import 'package:watcherooflutter/src/screens/add_party_screen.dart';
 
 import './src/providers/accept_invitation.dart';
 import './src/providers/friends.dart';
@@ -8,7 +10,6 @@ import './src/utils/navigation_service.dart';
 import './src/utils/service_locator.dart';
 import './src/screens/accept_invitation_screen.dart';
 import './src/screens/ready_screen.dart';
-import './src/providers/edit_profile_validation.dart';
 import './src/providers/profile.dart';
 import './src/providers/ready.dart';
 import './src/screens/about_screen.dart';
@@ -20,8 +21,6 @@ import './src/providers/auth.dart';
 import './src/screens/splash_screen.dart';
 import './src/screens/party_management_screen.dart';
 import './src/screens/auth_screen.dart';
-import './src/screens/create_party_screen.dart';
-import './src/providers/create_party.dart';
 
 void main() {
   setupLocator();
@@ -42,6 +41,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<Friends>(
           create: (ctx) => Friends(),
+        ),
+        ChangeNotifierProvider<Party>(
+          create: (ctx) => Party(),
         )
       ],
       child: Consumer<Auth>(
@@ -75,16 +77,7 @@ class MyApp extends StatelessWidget {
             routes: {
               TabsScreen.routeName: (ctx) => TabsScreen(),
               PartyManagementScreen.routeName: (ctx) => PartyManagementScreen(),
-              CreatePartyScreen.routeName: (ctx) =>
-                  ChangeNotifierProvider<CreateParty>(
-                    create: (ctx) => CreateParty(),
-                    child: CreatePartyScreen(),
-                  ),
-              EditProfileScreen.routeName: (ctx) =>
-                  ChangeNotifierProvider<EditProfileValidation>(
-                    create: (ctx) => EditProfileValidation(),
-                    child: EditProfileScreen(),
-                  ),
+              EditProfileScreen.routeName: (ctx) => EditProfileScreen(),
               ViewProfileScreen.routeName: (ctx) => ViewProfileScreen(),
               AddFriendScreen.routeName: (ctx) => AddFriendScreen(),
               AboutScreen.routeName: (ctx) => AboutScreen(),
@@ -98,6 +91,7 @@ class MyApp extends StatelessWidget {
                     child: AcceptInvitationScreen(),
                   ),
               MovieScreen.routeName: (ctx) => MovieScreen(),
+              AddPartyScreen.routeName: (ctx) => AddPartyScreen(),
             },
           );
         },

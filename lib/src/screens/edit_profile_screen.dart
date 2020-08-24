@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:watcherooflutter/src/providers/edit_profile_validation.dart';
-import 'package:watcherooflutter/src/utils/utils.dart';
+import 'package:watcherooflutter/src/validations/auth_form_validation.dart';
 
+import '../utils/utils.dart';
 import '../providers/profile.dart';
 import '../widgets/profile_picture_header.dart';
 
@@ -15,18 +15,31 @@ class EditProfileScreen extends StatefulWidget {
   }
 }
 
-class EditProfileState extends State<EditProfileScreen> with Utils {
-  bool btnEnabled = false;
-  Color accentColor;
-  Color bgColor;
+class EditProfileState extends State<EditProfileScreen>
+    with Utils, AuthFormValidation {
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final usernameController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
+  bool _isUpdating = false;
+
+  void _setInitValues() {
+    final profile = Provider.of<Profile>(context, listen: false).user;
+    firstNameController.text = profile.firstName;
+    lastNameController.text = profile.lastName;
+    usernameController.text = profile.username;
+  }
+
+  @override
+  void initState() {
+    _setInitValues();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    accentColor = Theme.of(context).accentColor;
-    bgColor = Theme.of(context).backgroundColor;
-    final userProfile = Provider.of<Profile>(context, listen: false).user;
-    Provider.of<EditProfileValidation>(context, listen: false)
-        .initValidation(userProfile);
     return Scaffold(
       body: buildBody(),
       bottomNavigationBar: Padding(
@@ -39,112 +52,105 @@ class EditProfileState extends State<EditProfileScreen> with Utils {
   Widget buildBody() {
     return ListView(
       children: <Widget>[
-        ProfilePictureHeader(
-          image:
-              'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
-          editable: true,
+        Consumer<Profile>(
+          builder: (context, profile, child) {
+            return ProfilePictureHeader(
+              image: profile.user.imageUrl,
+              editable: true,
+            );
+          },
         ),
-        Consumer2<Profile, EditProfileValidation>(
-          builder: (context, profile, validation, _) {
-            return Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: 20.0),
+              Row(
                 children: <Widget>[
-                  SizedBox(height: 20.0),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: TextFormField(
-                          initialValue: profile.user.firstName,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: accentColor,
-                              ),
+                  Form(
+                    key: _formKey,
+                    child: Expanded(
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Theme.of(context).accentColor,
                             ),
-                            labelText: 'First Name',
-                            errorText: validation.firstName.error,
                           ),
-                          onChanged: (value) {
-                            validation.changeFirstName(value);
-                            setState(() {
-                              btnEnabled = true;
-                            });
-                          },
+                          labelText: 'First Name',
                         ),
+                        controller: firstNameController,
+                        validator: validateSingleName,
                       ),
-                      SizedBox(width: 20.0),
-                      Expanded(
-                        child: TextFormField(
-                          initialValue: profile.user.lastName,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: accentColor,
-                              ),
-                            ),
-                            labelText: 'Last Name',
-                            errorText: validation.lastName.error,
-                          ),
-                          onChanged: (value) {
-                            validation.changeLastName(value);
-                            setState(() {
-                              btnEnabled = true;
-                            });
-                          },
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                  SizedBox(height: 30.0),
-                  TextFormField(
-                    initialValue: profile.user.username,
-                    decoration: InputDecoration(
+                  SizedBox(width: 20.0),
+                  Expanded(
+                    child: TextFormField(
+                      decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: accentColor,
+                            color: Theme.of(context).accentColor,
                           ),
                         ),
-                        labelText: 'Username',
-                        errorText: validation.username.error),
-                    onChanged: (value) {
-                      validation.changeUsername(value);
-                      setState(() {
-                        btnEnabled = true;
-                      });
-                    },
+                        labelText: 'Last Name',
+                      ),
+                      controller: lastNameController,
+                      validator: validateSingleName,
+                    ),
                   ),
                 ],
               ),
-            );
-          },
+              SizedBox(height: 30.0),
+              TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Theme.of(context).accentColor),
+                  ),
+                  labelText: 'Username',
+                ),
+                controller: usernameController,
+                validator: validateUsername,
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
 
   Widget buildSaveButton() {
-    return Consumer<EditProfileValidation>(
-        builder: (context, editProfileValidation, _) {
-      return RaisedButton(
-        disabledColor: accentColor,
-        disabledTextColor: Colors.white,
-        onPressed: !editProfileValidation.isValidSubmit || !btnEnabled
-            ? null
-            : () {
-                try {
-                  final updatedFields = editProfileValidation.updatedFields;
-                  Provider.of<Profile>(context, listen: false)
-                      .updateProfile(updatedFields);
-                } catch (err) {
-                  showError(err, context);
-                }
-              },
-        child: Text('Save'),
-      );
-    });
+    return RaisedButton(
+      disabledColor: Theme.of(context).accentColor,
+      disabledTextColor: Colors.white,
+      onPressed: _isUpdating ? null : _submitEditedProfile,
+      child: Text('Save'),
+    );
   }
 
-  
+  Future<void> _submitEditedProfile() async {
+    // TODO: CHECK IF THERE IS A WAY TO NOT SUBMIT IF NO VALUE IS CHANGED
+    if (_formKey.currentState.validate()) {
+      try {
+        setState(() => _isUpdating = true);
+
+        final Map<String, dynamic> updatedFields = {
+          'firstName': firstNameController.text,
+          'lastName': lastNameController.text,
+          'username': usernameController.text,
+        };
+
+        await Provider.of<Profile>(context, listen: false)
+            .updateProfile(updatedFields);
+
+        Navigator.of(context).pop();
+      } catch (err) {
+        showError(err, context);
+      }
+
+      setState(() => _isUpdating = false);
+    }
+  }
 }

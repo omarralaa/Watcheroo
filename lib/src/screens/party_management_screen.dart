@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:watcherooflutter/src/screens/add_party_screen.dart';
 
 import '../providers/profile.dart';
-import '../screens/create_party_screen.dart';
 import '../widgets/main_drawer.dart';
 import '../widgets/sliver_appbar.dart';
 
@@ -21,7 +21,7 @@ class PartyManagementScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed(CreatePartyScreen.routeName);
+          Navigator.of(context).pushNamed(AddPartyScreen.routeName);
         },
         child: Icon(Icons.add),
       ),

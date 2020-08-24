@@ -31,6 +31,8 @@ dependencies:
   socket_io_client: ^0.9.4
   firebase_messaging: ^6.0.16
   get_it: ^4.0.4
+  dio: ^3.0.9
+  cached_network_image: ^2.2.0+1
   flutter:
     sdk: flutter
 

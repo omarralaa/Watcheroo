@@ -1,4 +1,9 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:watcherooflutter/src/providers/profile.dart';
 
 class ProfilePictureHeader extends StatelessWidget {
   final bool editable;
@@ -53,13 +58,13 @@ class ProfilePictureHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  width: 140.0,
-                  height: 140.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage(image),
+                ClipOval(
+                  child: Container(
+                    width: 140.0,
+                    height: 140.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(image: NetworkImage(image), fit: BoxFit.cover),                 
                     ),
                   ),
                 ),
@@ -71,13 +76,16 @@ class ProfilePictureHeader extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    CircleAvatar(
-                      backgroundColor: Theme.of(context).accentColor,
-                      radius: 25.0,
-                      child: Icon(
-                        Icons.camera_alt,
-                        color: Colors.white,
+                    InkWell(
+                      child: CircleAvatar(
+                        backgroundColor: Theme.of(context).accentColor,
+                        radius: 23.0,
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: Colors.white,
+                        ),
                       ),
+                      onTap: () => _pickAndUploadPhoto(context),
                     ),
                   ],
                 ),
@@ -103,5 +111,21 @@ class ProfilePictureHeader extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _pickAndUploadPhoto(context) async {
+    File file = await FilePicker.getFile(type: FileType.image);
+    if (file == null) return;
+    double sizeInMb = file.lengthSync() / (1024 * 1024);
+    if (sizeInMb > 6) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Photo size must not excced 6 MB'),
+          duration: Duration(milliseconds: 1500),
+        ),
+      );
+    } else {
+      await Provider.of<Profile>(context, listen: false).updatePhoto(file);
+    }
   }
 }

@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:watcherooflutter/src/providers/profile.dart';
-import 'package:watcherooflutter/src/screens/create_party_screen.dart';
+import 'package:watcherooflutter/src/models/friend.dart';
+import 'package:watcherooflutter/src/screens/add_party_screen.dart';
 
-import 'package:watcherooflutter/src/widgets/profile_picture_header.dart';
+import '../providers/profile.dart';
+import '../widgets/profile_picture_header.dart';
 
 class ViewProfileScreen extends StatelessWidget {
   static const routeName = '/view-profile';
 
   @override
   Widget build(BuildContext context) {
-    final viewedProfile = ModalRoute.of(context).settings.arguments;
+    final viewedProfile = ModalRoute.of(context).settings.arguments as Friend;
     return Scaffold(
       body: Column(
         children: <Widget>[
           ProfilePictureHeader(
             // TODO: TO BE REPLACED WITH profile.user.image
             image:
-                'https://scontent-hbe1-1.xx.fbcdn.net/v/t31.0-8/23926366_370687530042433_140437082163129802_o.jpg?_nc_cat=105&_nc_sid=09cbfe&_nc_ohc=oGny2YyPpmoAX9KkQB7&_nc_ht=scontent-hbe1-1.xx&oh=9f6a14d3fe329c35f35a9f601f4b3758&oe=5F39DF24',
+                viewedProfile.imageUrl,
             editable: false,
           ),
           SizedBox(
@@ -64,7 +65,7 @@ class ViewProfileScreen extends StatelessWidget {
         padding: EdgeInsets.all(10),
         child: Text('Watch together now!'),
         onPressed: !profile.hasFriendbyUsername(viewedProfile.username) ? null : () {
-          Navigator.popAndPushNamed(context, CreatePartyScreen.routeName, arguments: viewedProfile);
+          Navigator.popAndPushNamed(context, AddPartyScreen.routeName, arguments: viewedProfile);
         },
       );
     });

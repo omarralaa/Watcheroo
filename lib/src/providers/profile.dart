@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:watcherooflutter/src/models/friend.dart';
 
@@ -23,7 +25,6 @@ class Profile extends ChangeNotifier {
   }
 
   Friend getFriendById(String id) {
-    print(user.friends);
     return user.friends.firstWhere((friend) => friend.id == id);
   }
 
@@ -52,6 +53,15 @@ class Profile extends ChangeNotifier {
       final updatedProfile = await _profileService.updateProfile(updatedFields);
       _user = updatedProfile;
       notifyListeners();
+    } catch (err) {
+      throw (err);
+    }
+  }
+
+  Future<void> updatePhoto(File file) async {
+    try {
+      await _profileService.uploadPhoto(file);
+      getProfile();
     } catch (err) {
       throw (err);
     }

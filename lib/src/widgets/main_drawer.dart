@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +20,8 @@ class MainDrawer extends StatelessWidget {
               drawerHeader(),
               ListTile(
                 title: Text('Watch Together!!!'),
-                onTap: () => Navigator.of(context).pushReplacementNamed(TabsScreen.routeName),
+                onTap: () => Navigator.of(context)
+                    .pushReplacementNamed(TabsScreen.routeName),
               ),
               Divider(),
               ListTile(
@@ -29,7 +31,8 @@ class MainDrawer extends StatelessWidget {
               Divider(),
               ListTile(
                 title: Text('About'),
-                onTap: () => Navigator.of(context).pushReplacementNamed(AboutScreen.routeName),
+                onTap: () => Navigator.of(context)
+                    .pushReplacementNamed(AboutScreen.routeName),
               ),
             ]),
           ),
@@ -63,8 +66,16 @@ class MainDrawer extends StatelessWidget {
                     Text(profile.user.firstName + ' ' + profile.user.lastName),
                 accountEmail: Text(profile.user.username),
                 currentAccountPicture: CircleAvatar(
-                  // TODO: TO BE CHANGED TO REAL PIC
-                  child: Text(profile.user.firstName[0].toUpperCase()),
+                  child: profile.user.photo == 'no-photo.png'
+                      ? Text(profile.user.firstName[0].toUpperCase())
+                      : Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                             image: DecorationImage(
+                                image: NetworkImage(profile.user.imageUrl), fit: BoxFit.cover),
+                          ),
+                          //child: CachedNetworkImage(imageUrl: profile.user.imageUrl, fit: BoxFit.cover,),
+                        ),
                   backgroundColor: Colors.white,
                 ),
               );

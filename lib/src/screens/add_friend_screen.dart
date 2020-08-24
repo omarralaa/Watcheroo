@@ -87,7 +87,16 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
     return Column(
       children: <Widget>[
         CircleAvatar(
-          child: Text(_friend.firstName[0].toUpperCase()),
+          child: _friend.photo == 'no-photo.png'
+              ? Text(_friend.firstName[0].toUpperCase())
+              : Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: NetworkImage(_friend.imageUrl),
+                        fit: BoxFit.cover),
+                  ),
+                ),
           radius: 30,
         ),
         SizedBox(height: 10),
@@ -123,8 +132,10 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
             ? Text(
                 'Friend Request Sent',
                 style: TextStyle(
-                    fontStyle: FontStyle.italic,
-                    color: Theme.of(context).accentColor),
+                  fontStyle: FontStyle.italic,
+                  color: Theme.of(context).accentColor,
+                  
+                ),
               )
             : _buildAddFriendButton(profile);
   }

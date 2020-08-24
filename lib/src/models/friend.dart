@@ -11,6 +11,10 @@ class Friend {
   String get lastName => _lastName;
   String get photo => _photo;
 
+  String get imageUrl {
+    return 'http://10.0.2.2:3000/uploads/$photo';
+  }
+
   Friend.fromJson(Map<String, dynamic> json) {
     _id = json['_id'];
     _username = json['username'];

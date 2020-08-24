@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:http/http.dart';
+import 'package:dio/dio.dart';
+import 'package:path/path.dart';
 import 'package:watcherooflutter/src/models/user_profile.dart';
-import 'package:http/http.dart' show get;
+import 'package:http/http.dart' as http;
 
 import './servicesUtils/service_utils.dart';
 
@@ -13,7 +14,7 @@ class ProfileService with ServiceUtils {
   Future<UserProfile> fetchProfile() async {
     try {
       final _token = await token;
-      final response = await get(
+      final response = await http.get(
         url,
         headers: {
           'Content-type': 'application/json',
@@ -39,16 +40,16 @@ class ProfileService with ServiceUtils {
   Future<UserProfile> updateProfile(Map<String, dynamic> updatedFields) async {
     try {
       final _token = await token;
-      final response = await put(
-        url,
-        headers: {
-          'Content-type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer ' + _token,
-        },
-        body: json.encode(updatedFields)
-      ).timeout(Duration(seconds: 5),
-          onTimeout: () => throw HttpException('Server Timed out'));
+      final response = await http
+          .put(url,
+              headers: {
+                'Content-type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + _token,
+              },
+              body: json.encode(updatedFields))
+          .timeout(Duration(seconds: 5),
+              onTimeout: () => throw HttpException('Server Timed out'));
 
       final responseBody = json.decode(response.body);
 
@@ -63,5 +64,33 @@ class ProfileService with ServiceUtils {
     }
   }
 
- 
+  Future<String> uploadPhoto(File file) async {
+    try {
+      final _token = await token;
+
+      final subUrl = url + '/photo';
+
+      final formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(file.path,
+            filename: basename(file.path)),
+      });
+
+      Dio dio = Dio();
+      final response = await dio.put(
+        subUrl,
+        data: formData,
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + _token,
+          },
+        ),
+      );
+
+      return response.data['data'];
+
+    } catch (error) {
+      throw error;
+    }
+  }
 }
