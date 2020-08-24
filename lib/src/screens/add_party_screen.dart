@@ -58,8 +58,7 @@ class _AddPartyScreenState extends State<AddPartyScreen> {
       body: Stack(
         children: <Widget>[
           AddPartyBackground(_pageNumber),
-          if (_pageNumber != 1)
-            _buildBackButton(),
+          if (_pageNumber != 1) _buildBackButton(),
           Container(
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -74,7 +73,8 @@ class _AddPartyScreenState extends State<AddPartyScreen> {
     return AnimatedCrossFade(
       firstChild:
           _pageNumber == 3 ? FilePicker(submitFile) : MoviePicker(submitMovie),
-      secondChild: FriendPicker(submitFriend, _friend.username),
+      secondChild:
+          FriendPicker(submitFriend, _friend == null ? null : _friend.username),
       crossFadeState: _pageNumber != 2
           ? CrossFadeState.showFirst
           : CrossFadeState.showSecond,

@@ -1,40 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:watcherooflutter/src/screens/movie_screen.dart';
 
 import '../models/friend.dart';
 import '../models/party.dart';
 import '../providers/profile.dart';
-import '../providers/ready.dart';
 import '../sockets/watchSocket.dart';
 import '../widgets/ready_background.dart';
 
-class ReadyScreen extends StatelessWidget {
+class ReadyScreen extends StatefulWidget {
   static const String routeName = '/ready';
 
-  void _initReady(BuildContext context) {
+  @override
+  _ReadyScreenState createState() => _ReadyScreenState();
+}
+
+class _ReadyScreenState extends State<ReadyScreen> {
+  final _watchSocket = WatchSocket();
+
+  Friend _friend;
+  Party _party;
+  String _roomId;
+
+  bool _isFriendReady = false;
+  bool _isUserReady = false;
+
+  void _initReady() {
     final Map<String, dynamic> map = ModalRoute.of(context).settings.arguments;
-    final Party party = map['party'];
-    final Friend friend = map['friend'];
-    final String roomId = map['roomId'];
-
-    Provider.of<Ready>(context, listen: false)
-        .setInitData(party, friend, roomId);
-  }
-
-  void _initSocket(BuildContext context) {
-    final roomId = Provider.of<Ready>(context, listen: false).roomId;
+    _friend = map['friend'];
+    _party = map['party'];
+    _roomId = map['roomId'];
     final profileId = Provider.of<Profile>(context, listen: false).user.id;
-    WatchSocket().setup(roomId, profileId);
+
+    WatchSocket().setup(_roomId, profileId);
+    _watchSocket.setStartPartyCallback(_startParty);
+    _watchSocket.setUpdatePartyCallback(_updateFriendReady);
   }
 
   @override
   Widget build(BuildContext context) {
-    _initReady(context);
-    _initSocket(context);
+    _initReady();
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          ReadyBackground(),
+          ReadyBackground(_isUserReady),
           _buildMovieLabel(context),
           _buildReadyText(),
           _buildReadyButton(context),
@@ -44,8 +53,6 @@ class ReadyScreen extends StatelessWidget {
   }
 
   Widget _buildMovieLabel(BuildContext context) {
-    final movieName =
-        Provider.of<Ready>(context, listen: false).party.movieName;
     return Positioned(
       right: 45,
       top: 170,
@@ -54,7 +61,7 @@ class ReadyScreen extends StatelessWidget {
         child: FittedBox(
           fit: BoxFit.cover,
           child: Text(
-            movieName,
+            _party.movieName,
             style: TextStyle(
               fontSize: 42,
               fontWeight: FontWeight.bold,
@@ -69,28 +76,23 @@ class ReadyScreen extends StatelessWidget {
     return Positioned(
       right: 68,
       top: 250,
-      child: Consumer<Ready>(
-        builder: (context, ready, child) {
-          final firstName = ready.friend.firstName;
-          return !ready.isFriendReady
-              ? Text(
-                  'Waiting for $firstName to be ready',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Theme.of(context).accentColor,
-                    fontStyle: FontStyle.italic,
-                  ),
-                )
-              : Text(
-                  '$firstName is ready now !',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                );
-        },
-      ),
+      child: !_isFriendReady
+          ? Text(
+              'Waiting for ${_friend.firstName} to be ready',
+              style: TextStyle(
+                fontSize: 16,
+                color: Theme.of(context).accentColor,
+                fontStyle: FontStyle.italic,
+              ),
+            )
+          : Text(
+              '${_friend.firstName} is ready now !',
+              style: TextStyle(
+                fontSize: 16,
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
     );
   }
 
@@ -98,21 +100,34 @@ class ReadyScreen extends StatelessWidget {
     return Positioned(
       right: 45,
       bottom: 170,
-      child: Consumer<Ready>(builder: (context, ready, child) {
-        return FlatButton(
-          child: CircleAvatar(
-            radius: 80,
-            backgroundColor: ready.isUserReady
-                ? Colors.amber
-                : Theme.of(context).primaryColor,
-            child: Text(
-              ready.isUserReady ? 'CANCEL' : 'READY',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
+      child: FlatButton(
+        child: CircleAvatar(
+          radius: 80,
+          backgroundColor:
+              _isUserReady ? Colors.amber : Theme.of(context).primaryColor,
+          child: Text(
+            _isUserReady ? 'CANCEL' : 'READY',
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
-          onPressed: ready.ready,
-        );
-      }),
+        ),
+        onPressed: () {
+          _watchSocket.emitReady();
+
+          setState(() {
+            _isUserReady = !_isUserReady;
+          });
+        },
+      ),
     );
+  }
+
+  void _startParty() {
+    Navigator.of(context).pushNamed(MovieScreen.routeName);
+  }
+
+  void _updateFriendReady(int numOfReady) {
+    setState(() {
+      _isFriendReady = numOfReady == 0 ? false : _isUserReady ? false : true;
+    });
   }
 }

@@ -11,7 +11,6 @@ import './src/utils/service_locator.dart';
 import './src/screens/accept_invitation_screen.dart';
 import './src/screens/ready_screen.dart';
 import './src/providers/profile.dart';
-import './src/providers/ready.dart';
 import './src/screens/about_screen.dart';
 import './src/screens/add_friend_screen.dart';
 import './src/screens/edit_profile_screen.dart';
@@ -81,10 +80,7 @@ class MyApp extends StatelessWidget {
               ViewProfileScreen.routeName: (ctx) => ViewProfileScreen(),
               AddFriendScreen.routeName: (ctx) => AddFriendScreen(),
               AboutScreen.routeName: (ctx) => AboutScreen(),
-              ReadyScreen.routeName: (ctx) => ChangeNotifierProvider<Ready>(
-                    create: (ctx) => Ready(),
-                    child: ReadyScreen(),
-                  ),
+              ReadyScreen.routeName: (ctx) => ReadyScreen(),
               AcceptInvitationScreen.routeName: (ctx) =>
                   ChangeNotifierProvider<AcceptInvitation>(
                     create: (ctx) => AcceptInvitation(),
