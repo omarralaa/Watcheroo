@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:watcherooflutter/src/screens/previous_parties_screen.dart';
 
 import '../providers/profile.dart';
 import '../screens/about_screen.dart';
@@ -26,7 +27,8 @@ class MainDrawer extends StatelessWidget {
               Divider(),
               ListTile(
                 title: Text('Previously Watched'),
-                //onTap: onTap: () => Navigator.of(context).pushReplacementNamed(PartyManagementScreen.routeName),,
+                onTap: () => Navigator.of(context)
+                    .pushReplacementNamed(PreviousPartiesScreen.routeName),
               ),
               Divider(),
               ListTile(
@@ -71,8 +73,9 @@ class MainDrawer extends StatelessWidget {
                       : Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                             image: DecorationImage(
-                                image: NetworkImage(profile.user.imageUrl), fit: BoxFit.cover),
+                            image: DecorationImage(
+                                image: NetworkImage(profile.user.imageUrl),
+                                fit: BoxFit.cover),
                           ),
                           //child: CachedNetworkImage(imageUrl: profile.user.imageUrl, fit: BoxFit.cover,),
                         ),
@@ -88,7 +91,7 @@ class MainDrawer extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: RaisedButton(
-          child: Text('Log out'),
+          child: Text('Logout'),
           onPressed: auth.logout,
         ),
       );

@@ -32,6 +32,7 @@ dependencies:
   firebase_messaging: ^6.0.16
   get_it: ^4.0.4
   dio: ^3.0.9
+  intl: ^0.16.1
   cached_network_image: ^2.2.0+1
   flutter:
     sdk: flutter
@@ -57,6 +58,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/logo.png
+    - assets/images/sofa.png
   #     - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

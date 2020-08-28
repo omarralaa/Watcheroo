@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:watcherooflutter/src/providers/party.dart';
 import 'package:watcherooflutter/src/screens/add_party_screen.dart';
+import 'package:watcherooflutter/src/screens/home_screen.dart';
+import 'package:watcherooflutter/src/screens/previous_parties_screen.dart';
 
 import './src/providers/accept_invitation.dart';
 import './src/providers/friends.dart';
@@ -18,7 +20,6 @@ import './src/screens/tabs_screen.dart';
 import './src/screens/view_profile_screen.dart';
 import './src/providers/auth.dart';
 import './src/screens/splash_screen.dart';
-import './src/screens/party_management_screen.dart';
 import './src/screens/auth_screen.dart';
 
 void main() {
@@ -75,7 +76,7 @@ class MyApp extends StatelessWidget {
                   ),
             routes: {
               TabsScreen.routeName: (ctx) => TabsScreen(),
-              PartyManagementScreen.routeName: (ctx) => PartyManagementScreen(),
+              HomeScreen.routeName: (ctx) => HomeScreen(),
               EditProfileScreen.routeName: (ctx) => EditProfileScreen(),
               ViewProfileScreen.routeName: (ctx) => ViewProfileScreen(),
               AddFriendScreen.routeName: (ctx) => AddFriendScreen(),
@@ -88,6 +89,7 @@ class MyApp extends StatelessWidget {
                   ),
               MovieScreen.routeName: (ctx) => MovieScreen(),
               AddPartyScreen.routeName: (ctx) => AddPartyScreen(),
+              PreviousPartiesScreen.routeName: (ctx) => PreviousPartiesScreen()
             },
           );
         },
