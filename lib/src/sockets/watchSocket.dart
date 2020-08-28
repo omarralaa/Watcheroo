@@ -34,7 +34,6 @@ class WatchSocket {
     _socket = IO.io('http://10.0.2.2:3000/watch', <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': true,
-      //'extraHeaders': {'foo': 'bar'},
       'query': {'roomId': roomId, 'profileId': profileId},
     });
 

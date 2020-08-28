@@ -12,13 +12,13 @@ class AboutScreen extends StatelessWidget {
         title: Text('About'),
       ),
       drawer: MainDrawer(),
-      body:  Container(
-          padding: EdgeInsets.all(20),
-          child: Text(
-            'Application is developed and maintained by Omar Alaa.',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-          ),
+      body: Container(
+        padding: EdgeInsets.all(20),
+        child: Text(
+          'Application is developed and maintained by Omar Alaa and Yosra Emad.',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
+      ),
     );
   }
 }

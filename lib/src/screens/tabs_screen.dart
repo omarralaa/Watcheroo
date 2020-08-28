@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:watcherooflutter/src/screens/home_screen.dart';
 import 'package:watcherooflutter/src/utils/notificationHandlers.dart';
 
 import '../screens/friends_screen.dart';
-import '../screens/party_management_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   static const String routeName = '/tabs';
@@ -19,7 +19,7 @@ class _TabsScreenState extends State<TabsScreen> {
   void initState() {
     _pages = [
       {
-        'page': PartyManagementScreen(),
+        'page': HomeScreen(),
         'title': 'Parties',
       },
       {

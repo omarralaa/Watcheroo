@@ -32,6 +32,11 @@ class Profile extends ChangeNotifier {
     return user.friends.firstWhere((friend) => friend.username == username);
   }
 
+  Friend getFriendByGuestOrCreator(String creator, String guest) {
+    return user.friends
+        .firstWhere((friend) => friend.id == creator || friend.id == guest);
+  }
+
   bool hasFriendbyUsername(String username) {
     for (var friend in _user.friends) {
       if (friend.username == username) return true;

@@ -65,4 +65,35 @@ class PartyService with ServiceUtils {
       throw error;
     }
   }
+
+  Future<List<Party>> getPrevParties() async {
+    try {
+      final _token = await token;
+      final response = await get(
+        url,
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + _token,
+        },
+      ).timeout(Duration(seconds: 5),
+          onTimeout: () => throw HttpException('Server Timed out'));
+
+      final responseBody = json.decode(response.body);
+
+      if (responseBody['error'] != null)
+        throw HttpException(responseBody['error']);
+
+      final parties = List<Party>();
+
+      final data = responseBody['data'] as List;
+      for (int i = 0; i < data.length; i++) {
+        parties.add(Party.fromJson(data[i]));
+      }
+
+      return parties;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
