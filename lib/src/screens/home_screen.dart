@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             _buildHeader(),
             SizedBox(height: 30),
-            _buildPendingParties(),
+            //_buildPendingParties(),
             _buildPrevParties(),
           ],
         ),
@@ -102,7 +102,8 @@ class _HomeScreenState extends State<HomeScreen> {
               return Container(
                 child: Card(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   margin: EdgeInsets.symmetric(vertical: 6),
                   elevation: 2,
                   child: Container(
@@ -167,7 +168,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(color: Colors.grey),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(PreviousPartiesScreen.routeName);
+                  Navigator.of(context)
+                      .pushNamed(PreviousPartiesScreen.routeName);
                 },
               ),
             ],

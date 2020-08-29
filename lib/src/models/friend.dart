@@ -23,6 +23,10 @@ class Friend {
     _photo = json['photo'];
   }
 
+  String get fullName {
+    return '$_firstName $_lastName';
+  }
+
   static List<Friend> getFriendsFromJson(List<dynamic> mapList) {
     List<Friend> friends = List<Friend>();
     if (mapList != null)
