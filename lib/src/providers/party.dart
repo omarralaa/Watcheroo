@@ -8,6 +8,7 @@ class Party with ChangeNotifier {
   final _partyService = locator<PartyService>();
 
   List<p.Party> prevParties;
+  List<p.Party> pendingParties;
 
   Future<p.Party> createParty(String friendId, String movieName) async {
     try {
@@ -23,6 +24,25 @@ class Party with ChangeNotifier {
       final parties = await _partyService.getPrevParties();
       prevParties = parties;
       notifyListeners();
+    } catch (err) {
+      throw (err);
+    }
+  }
+
+  Future<void> getPendingParties() async {
+    try {
+      final parties = await _partyService.getPendingParties();
+      pendingParties = parties;
+      notifyListeners();
+    } catch (err) {
+      throw (err);
+    }
+  }
+
+  Future<p.Party> getParty(String partyId) async {
+    try {
+      final fetchedParty = await PartyService().getParty(partyId);
+      return fetchedParty;
     } catch (err) {
       throw (err);
     }

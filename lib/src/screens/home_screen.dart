@@ -18,7 +18,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     Provider.of<Profile>(context, listen: false).getProfile();
-    Provider.of<Party>(context, listen: false).getPrevParties();
+    final party = Provider.of<Party>(context, listen: false);
+    party.getPrevParties();
+    party.getPendingParties();
 
     super.initState();
   }
@@ -65,17 +67,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildPendingParties() {
-    final profile = Provider.of<Profile>(context).user;
-    if (profile == null) return SizedBox();
-    final friends = profile.friends;
-    final dummy_data = [
-      {'movieName': 'Interstellar', 'friend': friends[0]},
-      {'movieName': 'Battlestar Galactica', 'friend': friends[1]},
-      {'movieName': 'Interstellar', 'friend': friends[0]},
-      {'movieName': 'Battlestar Galactica', 'friend': friends[1]},
-      {'movieName': 'Interstellar', 'friend': friends[0]},
-      {'movieName': 'Battlestar Galactica', 'friend': friends[1]},
-    ];
+    final profile = Provider.of<Profile>(context);
+    final pendingParties = Provider.of<Party>(context).pendingParties;
+
+    if (profile.user == null || pendingParties == null) return SizedBox();
     return Column(
       children: <Widget>[
         Container(
@@ -96,13 +91,14 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: ListView.builder(
             key: UniqueKey(),
-            itemCount: dummy_data.length,
+            itemCount: pendingParties.length,
             itemBuilder: (ctx, i) {
-              final friend = dummy_data[i]['friend'] as Friend;
+              final friend = profile.getFriendByGuestOrCreator(pendingParties[i].creator, pendingParties[i].guest);
               return Container(
                 child: Card(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   margin: EdgeInsets.symmetric(vertical: 6),
                   elevation: 2,
                   child: Container(
@@ -112,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         backgroundImage: NetworkImage(friend.imageUrl),
                       ),
                       title: Text(
-                        dummy_data[i]['movieName'],
+                        pendingParties[i].movieName,
                         style: TextStyle(fontSize: 16),
                       ),
                       subtitle: Text(
@@ -142,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildPrevParties() {
     final profile = Provider.of<Profile>(context);
     final prevParties = Provider.of<Party>(context).prevParties;
-    if (prevParties == null || profile == null) return SizedBox();
+    if (prevParties == null || profile.user == null) return SizedBox();
     return Column(
       children: <Widget>[
         Container(

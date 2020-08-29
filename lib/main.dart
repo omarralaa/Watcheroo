@@ -4,13 +4,12 @@ import 'package:watcherooflutter/src/providers/party.dart';
 import 'package:watcherooflutter/src/screens/add_party_screen.dart';
 import 'package:watcherooflutter/src/screens/home_screen.dart';
 import 'package:watcherooflutter/src/screens/previous_parties_screen.dart';
+import 'package:watcherooflutter/src/screens/review_invitation_screen.dart';
 
-import './src/providers/accept_invitation.dart';
 import './src/providers/friends.dart';
 import './src/screens/movie_screen.dart';
 import './src/utils/navigation_service.dart';
 import './src/utils/service_locator.dart';
-import './src/screens/accept_invitation_screen.dart';
 import './src/screens/ready_screen.dart';
 import './src/providers/profile.dart';
 import './src/screens/about_screen.dart';
@@ -82,14 +81,10 @@ class MyApp extends StatelessWidget {
               AddFriendScreen.routeName: (ctx) => AddFriendScreen(),
               AboutScreen.routeName: (ctx) => AboutScreen(),
               ReadyScreen.routeName: (ctx) => ReadyScreen(),
-              AcceptInvitationScreen.routeName: (ctx) =>
-                  ChangeNotifierProvider<AcceptInvitation>(
-                    create: (ctx) => AcceptInvitation(),
-                    child: AcceptInvitationScreen(),
-                  ),
               MovieScreen.routeName: (ctx) => MovieScreen(),
               AddPartyScreen.routeName: (ctx) => AddPartyScreen(),
-              PreviousPartiesScreen.routeName: (ctx) => PreviousPartiesScreen()
+              PreviousPartiesScreen.routeName: (ctx) => PreviousPartiesScreen(),
+              ReviewInvitationScreen.routeName: (ctx) => ReviewInvitationScreen()
             },
           );
         },
