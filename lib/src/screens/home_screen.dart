@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             _buildHeader(),
             SizedBox(height: 30),
-            _buildPendingParties(),
+            // _buildPendingParties(),
             _buildPrevParties(),
           ],
         ),
@@ -167,7 +167,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(color: Colors.grey),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(PreviousPartiesScreen.routeName);
+                  Navigator.of(context)
+                      .pushNamed(PreviousPartiesScreen.routeName);
                 },
               ),
             ],

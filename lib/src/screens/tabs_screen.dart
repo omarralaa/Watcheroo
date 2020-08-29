@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:watcherooflutter/src/screens/add_party_screen.dart';
 import 'package:watcherooflutter/src/screens/home_screen.dart';
 import 'package:watcherooflutter/src/utils/notificationHandlers.dart';
 
@@ -41,6 +42,14 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.pink,
+        tooltip: "Create a party",
+        elevation: 4,
+        onPressed: () => Navigator.pushNamed(context, AddPartyScreen.routeName),
+        child: Icon(Icons.add, color: Colors.white),
+      ),
       body: _pages[_selectedPageIndex]['page'],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedPageIndex,
