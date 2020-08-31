@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' show post, get;
+import 'package:http/http.dart' show post, get, put;
 
 import '../models/http_exception.dart';
 import './servicesUtils/service_utils.dart';
@@ -22,6 +22,36 @@ class PartyService with ServiceUtils {
         body: json.encode({
           '_guest': guestId,
           'movieName': movieName,
+        }),
+      ).timeout(Duration(seconds: 5),
+          onTimeout: () => throw HttpException('Server Timed out'));
+
+      final responseBody = json.decode(response.body);
+
+      if (responseBody['error'] != null)
+        throw HttpException(responseBody['error']);
+
+      final party = Party.fromJson(responseBody['data']);
+
+      return party;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<Party> changePartyStatus(String partyId, String status) async {
+    try {
+      final _token = await token;
+      final subUrl = '$url/$partyId';
+      final response = await put(
+        subUrl,
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + _token,
+        },
+        body: json.encode({
+          'status': status,
         }),
       ).timeout(Duration(seconds: 5),
           onTimeout: () => throw HttpException('Server Timed out'));

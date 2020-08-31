@@ -29,7 +29,7 @@ class _ReviewInvitationScreenState extends State<ReviewInvitationScreen> {
     Map data = ModalRoute.of(context).settings.arguments;
     final profile = Provider.of<Profile>(context, listen: false);
 
-    final String friendId = data['friendId'];
+    //final String friendId = data['friendId'];
     final String roomId = data['roomId'];
     final String partyId = data['partyId'];
 
@@ -246,7 +246,7 @@ class _ReviewInvitationScreenState extends State<ReviewInvitationScreen> {
     });
   }
 
-  void acceptParty() {
+  void acceptParty() async {
     if (_file == null) {
       _scaffoldKey.currentState.showSnackBar(
         SnackBar(
@@ -254,6 +254,7 @@ class _ReviewInvitationScreenState extends State<ReviewInvitationScreen> {
         ),
       );
     } else {
+      await changePartyStatus('accepted');
       Navigator.of(context).pushReplacementNamed(
         ReadyScreen.routeName,
         arguments: {
@@ -276,10 +277,10 @@ class _ReviewInvitationScreenState extends State<ReviewInvitationScreen> {
           actions: <Widget>[
             FlatButton(
               child: Text('Yes'),
-              onPressed: () {
+              onPressed: () async {
                 Navigator.of(ctx).pop();
                 Navigator.of(ctx).pop();
-                // TODO: CHANGE STATE OF THE PARTY
+                await changePartyStatus('declined');
               },
             ),
             FlatButton(
@@ -292,5 +293,23 @@ class _ReviewInvitationScreenState extends State<ReviewInvitationScreen> {
         );
       },
     );
+  }
+
+  Future<void> changePartyStatus(String status) async {
+    try {
+      final party = Provider.of<PartyProvider.Party>(context, listen: false);
+      await party.changePartyStatus(_party.id, status);
+      await party.getPendingParties();
+    } catch (err) {
+      print(err);
+      //_showSnackBarError();
+    }
+  }
+
+  void _showSnackBarError() {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text('Couldn\'t process your request'),
+      duration: Duration(milliseconds: 1500),
+    ));
   }
 }

@@ -116,6 +116,7 @@ class _AddPartyScreenState extends State<AddPartyScreen> {
         },
       );
     } catch (err) {
+      _showSnackBarError();
       throw (err);
     }
   }

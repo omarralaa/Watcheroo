@@ -131,7 +131,6 @@ class EditProfileState extends State<EditProfileScreen>
   }
 
   Future<void> _submitEditedProfile() async {
-    // TODO: CHECK IF THERE IS A WAY TO NOT SUBMIT IF NO VALUE IS CHANGED
     if (_formKey.currentState.validate()) {
       try {
         setState(() => _isUpdating = true);

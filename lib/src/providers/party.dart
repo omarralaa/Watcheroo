@@ -47,4 +47,14 @@ class Party with ChangeNotifier {
       throw (err);
     }
   }
+
+  Future<p.Party> changePartyStatus(String partyId, String status) async {
+    try {
+      final fetchedParty =
+          await PartyService().changePartyStatus(partyId, status);
+      return fetchedParty;
+    } catch (err) {
+      throw (err);
+    }
+  }
 }

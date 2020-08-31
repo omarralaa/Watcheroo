@@ -16,7 +16,6 @@ class ViewProfileScreen extends StatelessWidget {
       body: Column(
         children: <Widget>[
           ProfilePictureHeader(
-            // TODO: TO BE REPLACED WITH profile.user.image
             image:
                 viewedProfile.imageUrl,
             editable: false,

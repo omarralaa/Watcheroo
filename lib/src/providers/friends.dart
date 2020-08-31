@@ -6,8 +6,6 @@ import 'package:watcherooflutter/src/utils/service_locator.dart';
 
 class Friends with ChangeNotifier {
 
-  Friend _friend;
-
   final _friendService = locator<FriendService>();
 
   Future<Friend> searchFriendByUsername(String username) async {
@@ -21,14 +19,11 @@ class Friends with ChangeNotifier {
 
   Future<bool> sendFriendRequest(String profileId) async {
     try {
-      // _isLoadingFriendRequest = true;
       notifyListeners();
       return await _friendService.sendFriendRequest(profileId);
     } catch (err) {
-      _friend = null;
       throw (err);
     } finally {
-      //_isLoadingFriendRequest = false;
       notifyListeners();
     }
   }

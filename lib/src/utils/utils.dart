@@ -11,7 +11,7 @@ class Utils {
       context: context,
       builder: (ctx) {
         return AlertDialog(
-          title: Text('Authentication failed'),
+          title: Text('Error'),
           content: Text(errorMessage),
           actions: <Widget>[
             FlatButton(

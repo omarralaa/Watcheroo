@@ -10,7 +10,6 @@ class ReadyBackground extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraint) {
         final height = constraint.maxHeight;
-        final width = constraint.maxWidth;
 
         return Stack(
           children: <Widget>[

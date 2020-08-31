@@ -45,7 +45,7 @@ class _ReadyScreenState extends State<ReadyScreen> {
         children: <Widget>[
           ReadyBackground(_isUserReady),
           _buildMovieLabel(context),
-          _buildReadyText(),
+          //_buildReadyText(),
           _buildReadyButton(context),
         ],
       ),
@@ -56,18 +56,42 @@ class _ReadyScreenState extends State<ReadyScreen> {
     return Positioned(
       right: 45,
       top: 170,
-      child: Container(
-        width: 250,
-        child: FittedBox(
-          fit: BoxFit.cover,
-          child: Text(
-            _party.movieName,
-            style: TextStyle(
-              fontSize: 42,
-              fontWeight: FontWeight.bold,
+      child: Column(
+        children: <Widget>[
+          Container(
+            width: 250,
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: Text(
+                _party.movieName,
+                style: TextStyle(
+                  fontSize: 42,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
-        ),
+          SizedBox(height: 20),
+          Container(
+            child: !_isFriendReady
+                ? Text(
+                    'Waiting for ${_friend.firstName} to be ready',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).accentColor,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  )
+                : Text(
+                    '${_friend.firstName} is ready now !',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+          ),
+        ],
       ),
     );
   }
@@ -76,23 +100,25 @@ class _ReadyScreenState extends State<ReadyScreen> {
     return Positioned(
       right: 68,
       top: 250,
-      child: !_isFriendReady
-          ? Text(
-              'Waiting for ${_friend.firstName} to be ready',
-              style: TextStyle(
-                fontSize: 16,
-                color: Theme.of(context).accentColor,
-                fontStyle: FontStyle.italic,
+      child: Container(
+        child: !_isFriendReady
+            ? Text(
+                'Waiting for ${_friend.firstName} to be ready',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Theme.of(context).accentColor,
+                  fontStyle: FontStyle.italic,
+                ),
+              )
+            : Text(
+                '${_friend.firstName} is ready now !',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            )
-          : Text(
-              '${_friend.firstName} is ready now !',
-              style: TextStyle(
-                fontSize: 16,
-                color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+      ),
     );
   }
 
@@ -122,7 +148,7 @@ class _ReadyScreenState extends State<ReadyScreen> {
   }
 
   void _startParty() {
-    Navigator.of(context).pushNamed(MovieScreen.routeName);
+    Navigator.of(context).pushReplacementNamed(MovieScreen.routeName);
   }
 
   void _updateFriendReady(int numOfReady) {

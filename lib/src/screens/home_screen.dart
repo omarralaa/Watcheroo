@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:watcherooflutter/src/models/friend.dart';
 import 'package:watcherooflutter/src/providers/party.dart';
 import 'package:watcherooflutter/src/providers/profile.dart';
 import 'package:watcherooflutter/src/screens/previous_parties_screen.dart';
+import 'package:watcherooflutter/src/screens/review_invitation_screen.dart';
 import 'package:watcherooflutter/src/widgets/main_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -34,8 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             _buildHeader(),
             SizedBox(height: 30),
-            // _buildPendingParties(),
+            _buildPendingParties(),
             _buildPrevParties(),
+            SizedBox(height: 40),
           ],
         ),
       ),
@@ -93,7 +94,8 @@ class _HomeScreenState extends State<HomeScreen> {
             key: UniqueKey(),
             itemCount: pendingParties.length,
             itemBuilder: (ctx, i) {
-              final friend = profile.getFriendByGuestOrCreator(pendingParties[i].creator, pendingParties[i].guest);
+              final friend = profile.getFriendByGuestOrCreator(
+                  pendingParties[i].creator, pendingParties[i].guest);
               return Container(
                 child: Card(
                   shape: RoundedRectangleBorder(
@@ -122,7 +124,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           size: 50,
                           color: Colors.grey,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(
+                            ReviewInvitationScreen.routeName,
+                            arguments: {
+                              'roomId': pendingParties[i].creator,
+                              'partyId': pendingParties[i].id,
+                            },
+                          );
+                        },
                       ),
                     ),
                   ),

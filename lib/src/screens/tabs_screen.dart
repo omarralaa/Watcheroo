@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:watcherooflutter/src/providers/party.dart';
 import 'package:watcherooflutter/src/screens/add_party_screen.dart';
 import 'package:watcherooflutter/src/screens/home_screen.dart';
 import 'package:watcherooflutter/src/utils/notificationHandlers.dart';
@@ -29,7 +31,7 @@ class _TabsScreenState extends State<TabsScreen> {
       },
     ];
 
-    NotificationHandlers().handleNotifications();
+    NotificationHandlers().handleNotifications(context);
     super.initState();
   }
 
@@ -56,7 +58,7 @@ class _TabsScreenState extends State<TabsScreen> {
         onTap: _changeScreen,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.fastfood),
+            icon: _buildPartyIcon(),
             title: Text('Party'),
           ),
           BottomNavigationBarItem(
@@ -65,6 +67,40 @@ class _TabsScreenState extends State<TabsScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildPartyIcon() {
+    final pendingParties = Provider.of<Party>(context).pendingParties;
+    return Stack(
+      children: <Widget>[
+        Icon(Icons.fastfood),
+        pendingParties == null || pendingParties.length == 0
+            ? SizedBox()
+            : Positioned(
+                right: 0,
+                top: 0,
+                child: Container(
+                  padding: EdgeInsets.all(1),
+                  decoration: BoxDecoration(
+                    color: Colors.pink,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  constraints: BoxConstraints(
+                    minWidth: 12,
+                    minHeight: 12,
+                  ),
+                  child: Text(
+                    '${pendingParties.length}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 8,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+      ],
     );
   }
 }
