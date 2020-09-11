@@ -27,9 +27,7 @@ class _FilePickerState extends State<FilePicker> {
         ),
         SizedBox(height: 30),
         _buildSelectButton(),
-        SizedBox(
-          height: 20,
-        ),
+        SizedBox(height: 20),
         if (_file != null)
           Text(
             'File Picked',
@@ -55,7 +53,7 @@ class _FilePickerState extends State<FilePicker> {
             onTap: () async {
               if (_file == null) {
                 Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text('You must enter a movie name'),
+                  content: Text('You must select a file'),
                   duration: Duration(milliseconds: 1000),
                 ));
               } else {

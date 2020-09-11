@@ -259,7 +259,7 @@ class _ReviewInvitationScreenState extends State<ReviewInvitationScreen> {
         ReadyScreen.routeName,
         arguments: {
           'party': _party,
-          'fileName': _file.uri.toString(),
+          'file': _file,
           'friend': _friend,
           'roomId': _roomId
         },

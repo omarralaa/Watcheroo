@@ -110,7 +110,7 @@ class _AddPartyScreenState extends State<AddPartyScreen> {
         ReadyScreen.routeName,
         arguments: {
           'party': party,
-          'fileName': _file,
+          'file': _file,
           'friend': _friend,
           'roomId': userId,
         },

@@ -50,24 +50,31 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildHeader() {
     final profile = Provider.of<Profile>(context, listen: false).user;
-    return FittedBox(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-        child: Row(
-          children: <Widget>[
-            profile == null
-                ? LoadingHeader()
-                : Text(
-                    'Good ${_timing()},\n${profile.firstName} ${profile.lastName}',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                  ),
-            Image.asset(
-              'assets/images/sofa.png',
-              fit: BoxFit.cover,
-            )
-          ],
+    return Column(
+      children: <Widget>[
+        FittedBox(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+            child: Row(
+              children: <Widget>[
+                profile == null
+                    ? LoadingHeader()
+                    : Text(
+                        'Good ${_timing()},\n${profile.firstName} ${profile.lastName}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 25),
+                      ),
+                      SizedBox(width: 8),
+                Image.asset(
+                  'assets/images/sofa.png',
+                  fit: BoxFit.cover,
+                ),
+              ],
+            ),
+          ),
         ),
-      ),
+        Image.asset('assets/images/curved_line.png'),
+      ],
     );
   }
 

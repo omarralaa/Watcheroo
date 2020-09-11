@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:watcherooflutter/src/screens/movie_screen.dart';
@@ -21,6 +23,7 @@ class _ReadyScreenState extends State<ReadyScreen> {
   Friend _friend;
   Party _party;
   String _roomId;
+  File _file;
 
   bool _isFriendReady = false;
   bool _isUserReady = false;
@@ -30,6 +33,8 @@ class _ReadyScreenState extends State<ReadyScreen> {
     _friend = map['friend'];
     _party = map['party'];
     _roomId = map['roomId'];
+    _file = map['file'];
+
     final profileId = Provider.of<Profile>(context, listen: false).user.id;
 
     WatchSocket().setup(_roomId, profileId);
@@ -40,19 +45,41 @@ class _ReadyScreenState extends State<ReadyScreen> {
   @override
   Widget build(BuildContext context) {
     _initReady();
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          ReadyBackground(_isUserReady),
-          _buildMovieLabel(context),
-          //_buildReadyText(),
-          _buildReadyButton(context),
-        ],
+    return WillPopScope(
+      onWillPop: () async => showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            title: Text('Are you sure you want to quit ?'),
+            content: Text('Closing this page will cause the party to be canceled'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Yes'),
+                onPressed: () {
+                  _watchSocket.closeConnection();
+                  Navigator.of(context).pop(true);
+                },
+              ),
+              FlatButton(
+                  child: Text('No'),
+                  onPressed: () => Navigator.of(context).pop(false)),
+            ],
+          );
+        },
+      ),
+      child: Scaffold(
+        body: Stack(
+          children: <Widget>[
+            ReadyBackground(_isUserReady),
+            _buildLabels(context),
+            _buildReadyButton(context),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildMovieLabel(BuildContext context) {
+  Widget _buildLabels(BuildContext context) {
     return Positioned(
       right: 45,
       top: 170,
@@ -96,32 +123,6 @@ class _ReadyScreenState extends State<ReadyScreen> {
     );
   }
 
-  Widget _buildReadyText() {
-    return Positioned(
-      right: 68,
-      top: 250,
-      child: Container(
-        child: !_isFriendReady
-            ? Text(
-                'Waiting for ${_friend.firstName} to be ready',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Theme.of(context).accentColor,
-                  fontStyle: FontStyle.italic,
-                ),
-              )
-            : Text(
-                '${_friend.firstName} is ready now !',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Theme.of(context).primaryColor,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-      ),
-    );
-  }
-
   Widget _buildReadyButton(BuildContext context) {
     return Positioned(
       right: 45,
@@ -148,7 +149,10 @@ class _ReadyScreenState extends State<ReadyScreen> {
   }
 
   void _startParty() {
-    Navigator.of(context).pushReplacementNamed(MovieScreen.routeName);
+    Navigator.of(context).pushReplacementNamed(
+      MovieScreen.routeName,
+      arguments: {'file': _file, 'friend': _friend},
+    );
   }
 
   void _updateFriendReady(int numOfReady) {
