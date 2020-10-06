@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 25),
                       ),
-                      SizedBox(width: 8),
+                SizedBox(width: 8),
                 Image.asset(
                   'assets/images/sofa.png',
                   fit: BoxFit.cover,
@@ -216,7 +216,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     )
                   : ListView.builder(
                       padding: EdgeInsets.symmetric(horizontal: 15),
-                      itemCount: prevParties.length,
+                      itemCount:
+                          prevParties.length > 3 ? 3 : prevParties.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (ctx, i) {
                         final friend = profile.getFriendByGuestOrCreator(

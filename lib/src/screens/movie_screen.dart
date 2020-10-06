@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -23,6 +24,10 @@ class _MovieScreenState extends State<MovieScreen> {
   bool _isUserReady = false;
   bool _isFriendReady = false;
 
+  Timer _timer;
+  int _timerStart = 4;
+  bool _isTimerRunning = false;
+
   _setInitData() {
     final Map<String, dynamic> map = ModalRoute.of(context).settings.arguments;
     _file = map['file'];
@@ -30,7 +35,7 @@ class _MovieScreenState extends State<MovieScreen> {
 
     _watchSocket.setUpdatePartyCallback(_updateFriendReady);
     _watchSocket.setPausePartyCallback(_pause);
-    _watchSocket.setResumePartyCallback(_resume);
+    _watchSocket.setResumePartyCallback(_startTimer);
   }
 
   _playVideo() {
@@ -84,18 +89,21 @@ class _MovieScreenState extends State<MovieScreen> {
       child: Scaffold(
         backgroundColor: Colors.black,
         body: _buildBody(),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.pause),
-          onPressed: () {
-            _watchSocket.emitPause();
-          },
-        ),
+        floatingActionButton: !_isPaused
+            ? FloatingActionButton(
+                child: Icon(Icons.pause),
+                onPressed: () {
+                  _watchSocket.emitPause();
+                },
+              )
+            : SizedBox(),
       ),
     );
   }
 
   Widget _buildBody() {
     return Stack(
+      alignment: Alignment.center,
       children: <Widget>[
         if (_isPaused) _buildPauseDialog(),
         Center(
@@ -112,42 +120,68 @@ class _MovieScreenState extends State<MovieScreen> {
 
   Widget _buildPauseDialog() {
     return Positioned(
-      right: 0,
-      left: 0,
-      bottom: 50,
+      bottom: 0,
       child: Container(
-        alignment: Alignment.center,
+        height: 200,
+        width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Color(0xFF750f31),
           borderRadius: BorderRadius.circular(20),
         ),
-        height: 200,
         margin: EdgeInsets.symmetric(horizontal: 50),
-        padding: EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              _isFriendReady
-                  ? '${_friend.firstName} is ready'
-                  : 'Waiting for ${_friend.firstName} to be ready',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: _isFriendReady ? Colors.pink : Colors.black,
+        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+        child: _isTimerRunning && _timerStart < 4
+            ? Center(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 60),
+                  child: Text(
+                    '$_timerStart',
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              )
+            : Column(
+                children: <Widget>[
+                  Text(
+                    _isFriendReady
+                        ? '${_friend.firstName} is ready!'
+                        : '${_friend.firstName} is not ready!',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  SizedBox(
+                    width: 150,
+                    height: 50,
+                    child: OutlineButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0)),
+                      borderSide: BorderSide(color: Colors.white),
+                      child: Text(
+                        _isUserReady ? 'UNREADY' : 'READY',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                      onPressed: _isTimerRunning
+                          ? null
+                          : () {
+                              _watchSocket.emitReadyResume();
+                              setState(() {
+                                _isUserReady = !_isUserReady;
+                              });
+                            },
+                    ),
+                  ),
+                ],
               ),
-            ),
-            SizedBox(height: 20),
-            RaisedButton(
-              child: Text(_isUserReady ? 'UNREADY' : 'READY'),
-              onPressed: () {
-                _watchSocket.emitReadyResume();
-                setState(() {
-                  _isUserReady = !_isUserReady;
-                });
-              },
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -174,9 +208,26 @@ class _MovieScreenState extends State<MovieScreen> {
     _controller.pause();
   }
 
+  void _startTimer() {
+    _isTimerRunning = true;
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_timerStart == 1) {
+          _timer.cancel();
+          _timerStart = 4;
+          _isTimerRunning = false;
+          _resume();
+        } else {
+          _timerStart--;
+        }
+      });
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
     _controller.dispose();
+    _timer.cancel();
   }
 }
