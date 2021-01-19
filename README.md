@@ -1,16 +1,26 @@
-# watcherooflutter
+# Watcheroo
 
-A Simple application for friends to watch together.
+> Everything is better with friends
 
-## Getting Started
+A Simple Cross-Platform application for friends to watch movies and videos together.
 
-This project is a starting point for a Flutter application.
+## Requirements
 
-A few resources to get you started if this is your first Flutter project:
+To run this application you must have the Watcheroo-API Server running
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+you can clone it from the following link: https://github.com/HEROMORA/Watcheroo-API
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Description
+
+You can use ordreto to add your friends, then send them an invitation to watch a movie with you.
+if they accept it you can watch the movie together.
+A pause in any of the devices will cause the other device to pause.
+
+
+## Screenshots
+
+![Home Screen](https://i.imgur.com/wUuahiS.png)
+![Friends Screen](https://i.imgur.com/naVqoFy.png)
+![Previous Watches Screen](https://i.imgur.com/NhYFYyG.png)
+![New Movie Screen](https://i.imgur.com/Unxof0O.png)
+
